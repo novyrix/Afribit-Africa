@@ -11,6 +11,14 @@ html {
   scroll-padding-top: 80px; /* Account for fixed header */
 }
 
+/* Mobile: Account for bottom navigation */
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 60px;
+    scroll-padding-bottom: 70px; /* Account for mobile bottom nav */
+  }
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -23,6 +31,47 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===================================
+   MOBILE TOUCH OPTIMIZATIONS
+   =================================== */
+/* Prevent text selection on tap targets */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: rgba(247, 147, 26, 0.2);
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+/* Allow text selection in content areas */
+p,
+li,
+td,
+th,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: default;
+  user-select: text;
+}
+
+/* Improve scrolling performance on mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus (iOS) */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents iOS zoom */
   }
 }
 

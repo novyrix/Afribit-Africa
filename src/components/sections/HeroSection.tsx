@@ -8,7 +8,7 @@ import { ArrowRight, Play } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
         <video
@@ -26,14 +26,14 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <Container className="relative z-10">
+      <Container className="relative z-10 px-4">
         <div className="max-w-4xl mx-auto text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 md:mb-6 leading-tight">
               Empowering African Communities Through{" "}
               <span className="text-bitcoin">Bitcoin</span>
             </h1>
@@ -43,7 +43,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-8 text-gray-200"
+            className="text-lg sm:text-xl md:text-2xl mb-6 md:mb-8 text-gray-200 leading-relaxed px-4"
           >
             Building a sustainable future with Bitcoin education, merchant onboarding,
             and community development initiatives in Kenya.
@@ -53,12 +53,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
           >
             <Button
               asChild
               size="lg"
-              className="bg-bitcoin hover:bg-bitcoin-dark text-white text-lg px-8 py-6 h-auto"
+              className="bg-bitcoin hover:bg-bitcoin-dark text-white text-base md:text-lg px-6 md:px-8 h-12 md:h-14"
             >
               <Link href="/donate">
                 Donate Now
@@ -69,7 +69,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-black text-lg px-8 py-6 h-auto"
+              className="border-2 border-white text-white hover:bg-white hover:text-black text-base md:text-lg px-6 md:px-8 h-12 md:h-14"
             >
               <Link href="/programs">
                 View Programs
@@ -83,30 +83,30 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-16 grid grid-cols-3 gap-8"
+            className="mt-12 md:mt-16 grid grid-cols-3 gap-4 md:gap-8 px-4"
           >
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-bitcoin">2,000+</div>
-              <div className="text-sm md:text-base text-gray-300 mt-1">Transactions</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-bitcoin">2,000+</div>
+              <div className="text-xs sm:text-sm md:text-base text-gray-300 mt-1">Transactions</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-bitcoin">200+</div>
-              <div className="text-sm md:text-base text-gray-300 mt-1">Merchants</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-bitcoin">200+</div>
+              <div className="text-xs sm:text-sm md:text-base text-gray-300 mt-1">Merchants</div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold text-bitcoin">5</div>
-              <div className="text-sm md:text-base text-gray-300 mt-1">Programs</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-bitcoin">5</div>
+              <div className="text-xs sm:text-sm md:text-base text-gray-300 mt-1">Programs</div>
             </div>
           </motion.div>
         </div>
       </Container>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Hide on very small screens */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 hidden sm:block"
       >
         <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
           <motion.div

@@ -3,9 +3,11 @@
 import { Container } from '@/components/layout/Container';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { YouTubeEmbed } from '@/components/ui/youtube-embed';
 import { teamMembers } from '@/data/team';
 import { partners } from '@/data/partners';
 import { timeline } from '@/data/timeline';
+import { mediaCoverage } from '@/data/media';
 import {
   Target,
   Eye,
@@ -19,6 +21,7 @@ import {
   Linkedin,
   Twitter,
   CheckCircle,
+  Tv,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -282,6 +285,37 @@ export default function AboutPage() {
                 <div className="flex justify-center mb-3 text-primary">{stat.icon}</div>
                 <p className="text-4xl font-bold mb-2">{stat.value}</p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Media Coverage Section */}
+      <section className="py-20">
+        <Container>
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Tv className="h-10 w-10 text-primary" />
+              <h2 className="text-3xl md:text-4xl font-bold">Media Coverage</h2>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Global and local media coverage of our Bitcoin adoption work in Africa
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {mediaCoverage.map((media) => (
+              <Card key={media.id} className="overflow-hidden">
+                <YouTubeEmbed videoId={media.youtubeId} title={media.title} />
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-semibold text-primary">{media.outlet}</span>
+                    <span className="text-xs text-muted-foreground">{media.date}</span>
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">{media.title}</h3>
+                  <p className="text-sm text-muted-foreground">{media.description}</p>
+                </div>
               </Card>
             ))}
           </div>

@@ -54,6 +54,7 @@ export interface TestimonialCard {
   quote: string
   image?: string
   videoUrl?: string
+  youtubeId?: string
 }
 
 export interface StatItem {

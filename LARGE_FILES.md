@@ -12,9 +12,63 @@ The following video files are too large for GitHub (>100MB limit) and have been 
 6. **public/Videos/Merchant Interviews/Fridah Interview-1.mp4** (77.73 MB)
 7. **public/Videos/Merchant Interviews/Lilian Interview.mp4** (55.96 MB)
 
-## Recommendations for Production
+## ✅ Solution Implemented: YouTube Embeds
 
-For production deployment on Vercel, consider these options:
+Instead of hosting large video files, we've embedded YouTube videos for media coverage and community impact:
+
+### Media Coverage (About Page)
+- **BBC News** - Bitcoin Adoption in Kenya
+  - YouTube ID: `rPVoaYFiIDg`
+  - https://www.youtube.com/watch?v=rPVoaYFiIDg
+
+- **FirstPost** - Africa's Bitcoin Revolution
+  - YouTube ID: `l4mUySspn1E`
+  - https://www.youtube.com/watch?v=l4mUySspn1E
+
+- **AP Archive News** - Bitcoin in African Markets
+  - YouTube ID: `RBUj98JhpWY`
+  - https://www.youtube.com/watch?v=RBUj98JhpWY
+
+- **ABC News** - Financial Freedom Through Bitcoin
+  - YouTube ID: `0Ov1vgy8Gag`
+  - https://www.youtube.com/watch?v=0Ov1vgy8Gag
+
+- **Capital FM Kenya** - Bitcoin Adoption in Kenya
+  - YouTube ID: `d6mT2J1lHh0`
+  - https://www.youtube.com/watch?v=d6mT2J1lHh0
+
+- **Joe Nakamoto** - Bitcoin in Africa - Community Perspective
+  - YouTube ID: `LRSQSkiil0M`
+  - https://www.youtube.com/watch?v=LRSQSkiil0M
+
+### Implementation Details
+- Created `YouTubeEmbed` component (`src/components/ui/youtube-embed.tsx`)
+- Created media coverage data (`src/data/media.ts`)
+- Added Media Coverage section to About page
+- Updated testimonials to support YouTube embeds
+- Uses privacy-enhanced mode (`youtube-nocookie.com`)
+- Responsive 16:9 aspect ratio maintained
+
+### Benefits
+✅ Zero hosting costs  
+✅ Faster page loads (no large video downloads)  
+✅ Better SEO (YouTube metadata)  
+✅ Professional presentation  
+✅ No bandwidth limits  
+✅ Works perfectly on Vercel free tier
+
+## Current Implementation
+
+The website currently includes:
+- ✅ Smaller video files (< 50MB) for homepage hero and local testimonials
+- ✅ YouTube embeds for all major media coverage and news
+- ✅ Mixed approach: local videos for quick demos, YouTube for long-form content
+
+## Alternative Options (Not Needed)
+
+## Alternative Options (Not Needed)
+
+These alternatives are documented for reference but are not required since we're using YouTube embeds:
 
 ### Option 1: External CDN (Recommended)
 Upload large videos to a CDN service:

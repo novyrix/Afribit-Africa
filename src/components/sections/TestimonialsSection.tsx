@@ -3,6 +3,7 @@
 import { Container } from "@/components/layout/Container"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { YouTubeEmbed } from "@/components/ui/youtube-embed"
 import { motion, AnimatePresence } from "framer-motion"
 import { testimonials } from "@/data/testimonials"
 import Image from "next/image"
@@ -70,18 +71,29 @@ export function TestimonialsSection() {
                   <div className="grid md:grid-cols-2">
                     {/* Image/Video Side */}
                     <div className="relative h-64 md:h-auto min-h-[300px]">
-                      <Image
-                        src={currentTestimonial.image || "/Images/Hero section video background fallback.png"}
-                        alt={currentTestimonial.name}
-                        fill
-                        className="object-cover"
-                      />
-                      {currentTestimonial.videoUrl && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-colors cursor-pointer group">
-                          <div className="bg-bitcoin p-4 rounded-full group-hover:scale-110 transition-transform">
-                            <Play className="w-8 h-8 text-white" fill="white" />
-                          </div>
+                      {currentTestimonial.youtubeId ? (
+                        <div className="h-full flex items-center">
+                          <YouTubeEmbed 
+                            videoId={currentTestimonial.youtubeId} 
+                            title={`${currentTestimonial.name} - ${currentTestimonial.role}`}
+                          />
                         </div>
+                      ) : (
+                        <>
+                          <Image
+                            src={currentTestimonial.image || "/Images/Hero section video background fallback.png"}
+                            alt={currentTestimonial.name}
+                            fill
+                            className="object-cover"
+                          />
+                          {currentTestimonial.videoUrl && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-colors cursor-pointer group">
+                              <div className="bg-bitcoin p-4 rounded-full group-hover:scale-110 transition-transform">
+                                <Play className="w-8 h-8 text-white" fill="white" />
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
 

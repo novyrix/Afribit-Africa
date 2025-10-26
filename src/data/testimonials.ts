@@ -52,6 +52,15 @@ export const testimonials: TestimonialCard[] = [
     image: "/Images/Payment done in bitcoin.jpg",
     videoUrl: "/Videos/Transaction taking place.mp4",
   },
+  {
+    id: "compilation",
+    name: "Community Impact",
+    role: "Multiple Merchants",
+    location: "Kibera, Nairobi",
+    quote: "Watch how Bitcoin is transforming daily commerce across our community - from groceries to transport, Bitcoin payments are becoming the new normal.",
+    image: "/Images/Payment done in bitcoin.jpg",
+    youtubeId: "RBUj98JhpWY", // AP Archive - Bitcoin in African Markets
+  },
 ]
 
 export function getTestimonialById(id: string): TestimonialCard | undefined {
@@ -59,5 +68,5 @@ export function getTestimonialById(id: string): TestimonialCard | undefined {
 }
 
 export function getTestimonialsWithVideo(): TestimonialCard[] {
-  return testimonials.filter(t => t.videoUrl !== null)
+  return testimonials.filter(t => t.videoUrl || t.youtubeId)
 }

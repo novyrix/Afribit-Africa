@@ -1,7 +1,7 @@
 "use client"
 
 import { Container } from "@/components/layout/Container"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { programs } from "@/data/programs"
@@ -77,34 +77,34 @@ export function ProgramsSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 group">
+                <Card className="h-full flex flex-col hover:shadow-2xl transition-all duration-300 group overflow-hidden border-2 hover:border-bitcoin/20 hover:-translate-y-2">
                   {/* Card Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-56 overflow-hidden bg-gray-200">
                     <Image
                       src={program.image}
                       alt={program.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
                     {Icon && (
-                      <div className="absolute top-4 right-4 bg-bitcoin p-3 rounded-full">
+                      <div className="absolute top-4 right-4 bg-bitcoin p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                     )}
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="text-xl font-bold text-white">{program.title}</h3>
+                    </div>
                   </div>
 
                   {/* Card Content */}
-                  <CardHeader>
-                    <CardTitle className="text-xl group-hover:text-bitcoin transition-colors">
-                      {program.title}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2">
+                  <CardHeader className="space-y-3">
+                    <CardDescription className="line-clamp-3 text-base leading-relaxed">
                       {program.description}
                     </CardDescription>
                   </CardHeader>
 
-                  <CardContent className="grow">
+                  <CardContent className="grow space-y-4">
                     {program.goal && program.raised && (
                       <ProgressBar raised={program.raised} goal={program.goal} />
                     )}
@@ -114,6 +114,7 @@ export function ProgramsSection() {
                     <Button
                       asChild
                       variant="outline"
+                      size="lg"
                       className="w-full group-hover:bg-bitcoin group-hover:text-white group-hover:border-bitcoin transition-all"
                     >
                       <Link href={`/programs#${program.slug}`}>

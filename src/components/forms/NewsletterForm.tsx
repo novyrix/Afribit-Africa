@@ -90,7 +90,9 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
           />
           <Button
             type="submit"
-            className="bg-bitcoin hover:bg-bitcoin-dark shrink-0"
+            variant="secondary"
+            size="lg"
+            className="bg-white text-bitcoin hover:bg-white/90 hover:text-bitcoin-dark shrink-0 font-semibold shadow-lg"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -106,7 +108,7 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         {showName && (
           <FormField
             control={form.control}
@@ -114,7 +116,7 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Your name (optional)" {...field} />
+                  <Input placeholder="Your name (optional)" className="bg-gray-800 border-gray-700 text-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,6 +133,7 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
                 <Input
                   type="email"
                   placeholder="your.email@example.com"
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
                   {...field}
                 />
               </FormControl>
@@ -141,7 +144,8 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
 
         <Button
           type="submit"
-          className="w-full bg-bitcoin hover:bg-bitcoin-dark"
+          className="w-full bg-bitcoin hover:bg-bitcoin-dark text-white"
+          size="lg"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
@@ -152,7 +156,7 @@ export function NewsletterForm({ showName = false, inline = false }: NewsletterF
           ) : (
             <>
               <Mail className="mr-2 h-4 w-4" />
-              Subscribe to Newsletter
+              Subscribe
             </>
           )}
         </Button>

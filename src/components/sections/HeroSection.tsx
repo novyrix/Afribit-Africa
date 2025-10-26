@@ -21,8 +21,8 @@ export function HeroSection() {
         >
           <source src="/Videos/Home hero section video.mp4" type="video/mp4" />
         </video>
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Dark overlay for better text readability - increased opacity */}
+        <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/80" />
       </div>
 
       {/* Content */}

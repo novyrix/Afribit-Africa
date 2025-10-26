@@ -15,35 +15,30 @@ const DONATION_TIERS = [
     title: 'Supporter',
     description: 'Help us reach 5 people with Bitcoin education',
     icon: <Heart className="h-6 w-6" />,
-    color: 'bg-blue-500',
   },
   {
     amount: 50,
     title: 'Advocate',
     description: 'Support 2 training sessions for local merchants',
     icon: <Users className="h-6 w-6" />,
-    color: 'bg-green-500',
   },
   {
     amount: 100,
     title: 'Champion',
     description: 'Enable 10 Bitcoin wallet setups',
     icon: <Bitcoin className="h-6 w-6" />,
-    color: 'bg-orange-500',
   },
   {
     amount: 250,
     title: 'Pioneer',
     description: 'Onboard 5 merchants to accept Bitcoin',
     icon: <TrendingUp className="h-6 w-6" />,
-    color: 'bg-purple-500',
   },
   {
     amount: 500,
     title: 'Visionary',
     description: 'Fully fund a community education program',
     icon: <Globe className="h-6 w-6" />,
-    color: 'bg-pink-500',
   },
 ];
 
@@ -175,16 +170,16 @@ export default function DonatePage() {
               {DONATION_TIERS.map((tier, index) => (
                 <Card
                   key={index}
-                  className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group"
+                  className="p-6 md:p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 hover:border-bitcoin/20"
                   onClick={() => handleDonate(tier.amount)}
                 >
-                  <div className={`${tier.color} text-white p-3 rounded-full w-fit mb-4 group-hover:scale-110 transition-transform`}>
+                  <div className="bg-bitcoin/10 text-bitcoin p-4 rounded-full w-fit mb-6 group-hover:scale-110 group-hover:bg-bitcoin group-hover:text-white transition-all duration-300">
                     {tier.icon}
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{tier.title}</h3>
-                  <p className="text-3xl font-bold text-primary mb-4">${tier.amount}</p>
-                  <p className="text-muted-foreground mb-6">{tier.description}</p>
-                  <Button className="w-full group-hover:bg-primary group-hover:text-white" variant="outline">
+                  <h3 className="text-2xl font-bold mb-3 group-hover:text-bitcoin transition-colors">{tier.title}</h3>
+                  <p className="text-4xl font-bold text-bitcoin mb-6">${tier.amount}</p>
+                  <p className="text-muted-foreground mb-8 leading-relaxed">{tier.description}</p>
+                  <Button className="w-full group-hover:bg-bitcoin group-hover:text-white transition-all" variant="outline" size="lg">
                     Select
                   </Button>
                 </Card>
@@ -192,18 +187,18 @@ export default function DonatePage() {
 
               {/* Custom Amount Card */}
               <Card
-                className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 border-dashed"
+                className="p-6 md:p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 border-dashed border-bitcoin/30 hover:border-bitcoin group"
                 onClick={() => handleDonate()}
               >
-                <div className="bg-linear-to-br from-primary to-orange-500 text-white p-3 rounded-full w-fit mb-4 hover:scale-110 transition-transform">
+                <div className="bg-linear-to-br from-bitcoin to-red-600 text-white p-4 rounded-full w-fit mb-6 group-hover:scale-110 transition-transform">
                   <Heart className="h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Custom Amount</h3>
-                <p className="text-3xl font-bold text-primary mb-4">$___</p>
-                <p className="text-muted-foreground mb-6">
+                <h3 className="text-2xl font-bold mb-3 group-hover:text-bitcoin transition-colors">Custom Amount</h3>
+                <p className="text-4xl font-bold text-bitcoin mb-6">$___</p>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
                   Choose any amount that works for you
                 </p>
-                <Button className="w-full" variant="outline">
+                <Button className="w-full" variant="outline" size="lg">
                   Choose Amount
                 </Button>
               </Card>

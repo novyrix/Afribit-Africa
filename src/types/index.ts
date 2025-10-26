@@ -25,6 +25,7 @@ export interface NavItem {
   href: string
   description?: string
   external?: boolean
+  icon?: React.ComponentType<{ className?: string }>
 }
 
 export interface SocialLink {

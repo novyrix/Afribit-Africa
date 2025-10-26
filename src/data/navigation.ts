@@ -1,30 +1,36 @@
 // Site navigation and footer data
 import type { NavItem, SocialLink } from "@/types"
+import { Home, Info, Grid3x3, Heart, Mail, Twitter, Facebook, Linkedin, Youtube } from "lucide-react"
 
 export const mainNavigation: NavItem[] = [
   {
     title: "Home",
     href: "/",
+    icon: Home,
   },
   {
     title: "About",
     href: "/about",
     description: "Learn about our mission and impact",
+    icon: Info,
   },
   {
     title: "Programs",
     href: "/programs",
     description: "Our community initiatives",
+    icon: Grid3x3,
   },
   {
     title: "Donate",
     href: "/donate",
     description: "Support our mission",
+    icon: Heart,
   },
   {
     title: "Contact",
     href: "/contact",
     description: "Get in touch with us",
+    icon: Mail,
   },
 ]
 

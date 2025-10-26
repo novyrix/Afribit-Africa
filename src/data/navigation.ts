@@ -1,6 +1,6 @@
 // Site navigation and footer data
 import type { NavItem, SocialLink } from "@/types"
-import { Home, Info, Grid3x3, Heart, Mail, Twitter, Facebook, Linkedin, Youtube } from "lucide-react"
+import { Home, Info, Grid3x3, Heart, Mail } from "lucide-react"
 
 export const mainNavigation: NavItem[] = [
   {

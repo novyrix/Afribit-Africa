@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container } from '@/components/layout/Container';
 import { DonationModal } from '@/components/donations/DonationModal';
 import { ImpactCalculator } from '@/components/donations/ImpactCalculator';
-import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/animations';
+import { ScrollReveal } from '@/components/animations';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';

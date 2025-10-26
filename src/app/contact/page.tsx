@@ -41,35 +41,39 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Contact Information Cards */}
           <div className="lg:col-span-1 space-y-6">
-            <Card>
+            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-bitcoin" />
+                <CardTitle className="flex items-center gap-3">
+                  <div className="bg-bitcoin/10 p-2 rounded-full">
+                    <Mail className="w-5 h-5 text-bitcoin" />
+                  </div>
                   Email Us
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
+              <CardContent className="space-y-3">
+                <p className="text-muted-foreground leading-relaxed">
                   Send us an email and we&apos;ll respond within 24 hours.
                 </p>
                 <a
                   href="mailto:info@afribit.africa"
-                  className="text-bitcoin hover:underline font-medium mt-2 block"
+                  className="text-bitcoin hover:text-bitcoin-dark font-semibold block transition-colors"
                 >
                   info@afribit.africa
                 </a>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-bitcoin" />
+                <CardTitle className="flex items-center gap-3">
+                  <div className="bg-bitcoin/10 p-2 rounded-full">
+                    <MapPin className="w-5 h-5 text-bitcoin" />
+                  </div>
                   Location
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground leading-relaxed">
                   Kibera, Nairobi
                   <br />
                   Kenya
@@ -77,23 +81,25 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-bitcoin" />
+                <CardTitle className="flex items-center gap-3">
+                  <div className="bg-bitcoin/10 p-2 rounded-full">
+                    <MessageSquare className="w-5 h-5 text-bitcoin" />
+                  </div>
                   Social Media
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-3">
+              <CardContent className="space-y-3">
+                <p className="text-muted-foreground leading-relaxed">
                   Connect with us on social media for updates and news.
                 </p>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   <a
                     href="https://twitter.com/afribitafrica"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-bitcoin hover:text-bitcoin-dark transition-colors"
+                    className="text-bitcoin hover:text-bitcoin-dark transition-colors font-medium"
                   >
                     Twitter
                   </a>
@@ -102,7 +108,7 @@ export default function ContactPage() {
                     href="https://facebook.com/afribitafrica"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-bitcoin hover:text-bitcoin-dark transition-colors"
+                    className="text-bitcoin hover:text-bitcoin-dark transition-colors font-medium"
                   >
                     Facebook
                   </a>
@@ -113,10 +119,10 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="border-2 hover:border-bitcoin/20 shadow-lg">
               <CardHeader>
-                <CardTitle>Send Us a Message</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl">Send Us a Message</CardTitle>
+                <CardDescription className="text-base">
                   Fill out the form below and we&apos;ll get back to you as soon as possible.
                 </CardDescription>
               </CardHeader>

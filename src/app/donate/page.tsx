@@ -233,20 +233,23 @@ export default function DonatePage() {
 
             <div className="grid md:grid-cols-3 gap-6 md:gap-8">
               {IMPACT_STORIES.map((story, index) => (
-                <Card key={index} className="p-6 space-y-4">
-                  <div className="aspect-square rounded-lg overflow-hidden bg-secondary">
+                <Card 
+                  key={index} 
+                  className="p-6 space-y-4 border-2 hover:border-bitcoin/20 hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden"
+                >
+                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-200">
                     <img
                       src={story.image}
                       alt={story.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
                         e.currentTarget.src = '/Images/placeholder.jpg';
                       }}
                     />
                   </div>
-                  <h3 className="text-xl font-bold">{story.name}</h3>
-                  <p className="text-sm text-primary">{story.role}</p>
-                  <p className="text-muted-foreground italic">&ldquo;{story.story}&rdquo;</p>
+                  <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{story.name}</h3>
+                  <p className="text-sm text-bitcoin font-semibold">{story.role}</p>
+                  <p className="text-muted-foreground italic leading-relaxed">&ldquo;{story.story}&rdquo;</p>
                 </Card>
               ))}
             </div>

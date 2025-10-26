@@ -67,10 +67,10 @@ export function TestimonialsSection() {
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
               >
-                <Card className="overflow-hidden">
+                <Card className="overflow-hidden border-2 hover:border-bitcoin/20 shadow-lg hover:shadow-2xl transition-all">
                   <div className="grid md:grid-cols-2">
                     {/* Image/Video Side */}
-                    <div className="relative h-64 md:h-auto min-h-[300px]">
+                    <div className="relative h-64 md:h-auto min-h-[350px] bg-gray-200">
                       {currentTestimonial.youtubeId ? (
                         <div className="h-full flex items-center">
                           <YouTubeEmbed 
@@ -98,17 +98,19 @@ export function TestimonialsSection() {
                     </div>
 
                     {/* Content Side */}
-                    <CardContent className="p-8 md:p-12 flex flex-col justify-center">
-                      <Quote className="w-12 h-12 text-bitcoin mb-6" />
+                    <CardContent className="p-8 md:p-12 flex flex-col justify-center bg-linear-to-br from-white to-gray-50">
+                      <div className="bg-bitcoin/10 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <Quote className="w-7 h-7 text-bitcoin" />
+                      </div>
                       
-                      <blockquote className="text-lg md:text-xl text-gray-700 mb-6 italic">
+                      <blockquote className="text-lg md:text-xl text-gray-700 mb-8 italic leading-relaxed">
                         &quot;{currentTestimonial.quote}&quot;
                       </blockquote>
 
-                      <div className="mt-auto">
-                        <p className="font-semibold text-lg">{currentTestimonial.name}</p>
+                      <div className="mt-auto space-y-1">
+                        <p className="font-bold text-lg">{currentTestimonial.name}</p>
                         {currentTestimonial.role && (
-                          <p className="text-bitcoin font-medium">{currentTestimonial.role}</p>
+                          <p className="text-bitcoin font-semibold">{currentTestimonial.role}</p>
                         )}
                         {currentTestimonial.location && (
                           <p className="text-sm text-muted-foreground">{currentTestimonial.location}</p>

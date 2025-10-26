@@ -126,10 +126,14 @@ export default function AboutPage() {
                   'Constantly exploring new ways to make Bitcoin accessible, practical, and beneficial.',
               },
             ].map((value, index) => (
-              <Card key={index} className="p-6 text-center space-y-4">
-                <div className="flex justify-center text-primary">{value.icon}</div>
-                <h3 className="text-xl font-bold">{value.title}</h3>
-                <p className="text-muted-foreground">{value.description}</p>
+              <Card key={index} className="p-6 md:p-8 text-center space-y-4 border-2 hover:border-bitcoin/20 hover:shadow-lg hover:-translate-y-1 transition-all group">
+                <div className="flex justify-center">
+                  <div className="bg-bitcoin/10 group-hover:bg-bitcoin p-4 rounded-full transition-colors">
+                    <div className="text-primary group-hover:text-white transition-colors">{value.icon}</div>
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{value.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
               </Card>
             ))}
           </div>
@@ -148,26 +152,27 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {teamMembers.map((member, index) => (
-              <Card key={index} className="overflow-hidden">
-                <div className="aspect-square bg-secondary relative">
+              <Card key={index} className="overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-bitcoin/20">
+                <div className="aspect-square bg-gray-200 relative overflow-hidden">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                     onError={(e) => {
                       e.currentTarget.src = '/Images/placeholder.jpg';
                     }}
                   />
                 </div>
-                <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-bold">{member.name}</h3>
-                  <p className="text-sm text-primary">{member.role}</p>
-                  <p className="text-sm text-muted-foreground">{member.bio}</p>
-                  <div className="flex gap-3 pt-2">
+                <div className="p-6 space-y-3 bg-white group-hover:bg-gray-50 transition-colors">
+                  <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{member.name}</h3>
+                  <p className="text-sm text-bitcoin font-semibold">{member.role}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+                  <div className="flex gap-3 pt-2 border-t">
                     {member.email && (
                       <a
                         href={`mailto:${member.email}`}
-                        className="text-muted-foreground hover:text-primary transition-colors"
+                        className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-muted-foreground hover:bg-bitcoin hover:text-white transition-all hover:scale-110"
+                        aria-label="Email"
                       >
                         <Mail className="h-4 w-4" />
                       </a>
@@ -177,7 +182,8 @@ export default function AboutPage() {
                         href={`https://linkedin.com/in/${member.linkedin}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
+                        className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-muted-foreground hover:bg-bitcoin hover:text-white transition-all hover:scale-110"
+                        aria-label="LinkedIn"
                       >
                         <Linkedin className="h-4 w-4" />
                       </a>
@@ -187,7 +193,8 @@ export default function AboutPage() {
                         href={`https://twitter.com/${member.twitter.replace('@', '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
+                        className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-muted-foreground hover:bg-bitcoin hover:text-white transition-all hover:scale-110"
+                        aria-label="Twitter"
                       >
                         <Twitter className="h-4 w-4" />
                       </a>
@@ -247,13 +254,21 @@ export default function AboutPage() {
                     {/* Content */}
                     <div className="grow pl-16 md:w-1/2 md:pl-12">
                       <Card
-                        className={`p-6 ${event.milestone ? 'border-primary' : ''}`}
+                        className={`p-6 border-2 hover:shadow-lg transition-all ${
+                          event.milestone 
+                            ? 'border-bitcoin hover:border-bitcoin/60 bg-bitcoin/5' 
+                            : 'hover:border-bitcoin/20'
+                        }`}
                       >
-                        <div className="flex items-start gap-3 mb-2">
-                          {event.milestone && <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />}
-                          <h3 className="text-lg font-bold">{event.title}</h3>
+                        <div className="flex items-start gap-3 mb-3">
+                          {event.milestone && (
+                            <div className="shrink-0 mt-0.5 bg-bitcoin/10 p-1.5 rounded-full">
+                              <CheckCircle className="h-5 w-5 text-bitcoin" />
+                            </div>
+                          )}
+                          <h3 className="text-lg font-bold leading-tight">{event.title}</h3>
                         </div>
-                        <p className="text-muted-foreground">{event.description}</p>
+                        <p className="text-muted-foreground leading-relaxed">{event.description}</p>
                       </Card>
                     </div>
                   </div>
@@ -281,10 +296,15 @@ export default function AboutPage() {
               { value: '1000+', label: 'Community Members', icon: <Users /> },
               { value: '5', label: 'Active Programs', icon: <CheckCircle /> },
             ].map((stat, index) => (
-              <Card key={index} className="p-6 text-center space-y-3">
-                <div className="flex justify-center text-primary">{stat.icon}</div>
+              <Card 
+                key={index} 
+                className="p-6 text-center space-y-3 border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all group cursor-default"
+              >
+                <div className="flex justify-center text-bitcoin group-hover:scale-110 transition-transform">
+                  {stat.icon}
+                </div>
                 <p className="text-4xl font-bold">{stat.value}</p>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
               </Card>
             ))}
           </div>
@@ -338,18 +358,18 @@ export default function AboutPage() {
                 key={index}
                 className="flex flex-col items-center text-center group cursor-pointer"
               >
-                <div className="h-24 w-24 mb-4 bg-white rounded-lg p-4 flex items-center justify-center group-hover:shadow-lg transition-shadow">
+                <div className="h-24 w-24 mb-4 bg-white rounded-lg p-4 flex items-center justify-center shadow-md group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="max-h-full max-w-full object-contain"
+                    className="max-h-full max-w-full object-contain transition-transform duration-300"
                     onError={(e) => {
                       e.currentTarget.src = '/Logo/logo.svg';
                     }}
                   />
                 </div>
-                <p className="text-sm font-medium mb-1">{partner.name}</p>
-                <p className="text-xs text-muted-foreground line-clamp-2">
+                <p className="text-sm font-medium mb-1 group-hover:text-bitcoin transition-colors">{partner.name}</p>
+                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                   {partner.description}
                 </p>
               </div>

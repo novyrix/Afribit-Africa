@@ -186,17 +186,19 @@ export function ContactForm() {
         {/* Submit Button */}
         <Button
           type="submit"
-          className="w-full bg-bitcoin hover:bg-bitcoin-dark"
+          size="lg"
+          variant="gradient"
+          className="w-full"
           disabled={isSubmitting || !hCaptchaToken}
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending...
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Sending Message...
             </>
           ) : (
             <>
-              <Send className="mr-2 h-4 w-4" />
+              <Send className="mr-2 h-5 w-5" />
               Send Message
             </>
           )}

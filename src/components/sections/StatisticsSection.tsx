@@ -53,13 +53,13 @@ function StatItem({ icon, value, label, suffix, prefix }: StatItemProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="text-center"
+      className="text-center group cursor-default"
     >
-      <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-bitcoin/10">
-        <div className="text-bitcoin">{icon}</div>
+      <div className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-bitcoin/10 group-hover:bg-bitcoin transition-all duration-300 group-hover:scale-110">
+        <div className="text-bitcoin group-hover:text-white transition-colors">{icon}</div>
       </div>
       <AnimatedCounter value={value} suffix={suffix} prefix={prefix} />
-      <div className="text-muted-foreground mt-2 text-sm md:text-base">{label}</div>
+      <div className="text-muted-foreground mt-3 text-sm md:text-base font-medium">{label}</div>
     </motion.div>
   )
 }

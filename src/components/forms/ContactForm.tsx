@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { toast } from "sonner"
-import { Loader2, Send } from "lucide-react"
+import { Send } from "lucide-react"
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -189,13 +189,11 @@ export function ContactForm() {
           size="lg"
           variant="gradient"
           className="w-full"
-          disabled={isSubmitting || !hCaptchaToken}
+          loading={isSubmitting}
+          disabled={!hCaptchaToken}
         >
           {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Sending Message...
-            </>
+            'Sending Message...'
           ) : (
             <>
               <Send className="mr-2 h-5 w-5" />

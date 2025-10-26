@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Bitcoin } from 'lucide-react';
+import { Bitcoin } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -307,12 +307,9 @@ export function DonationModal({
                   >
                     Back
                   </Button>
-                  <Button type="submit" disabled={isSubmitting} className="flex-1" size="lg">
+                  <Button type="submit" loading={isSubmitting} className="flex-1" size="lg">
                     {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
-                      </>
+                      'Processing...'
                     ) : (
                       <>
                         <Bitcoin className="mr-2 h-4 w-4" />

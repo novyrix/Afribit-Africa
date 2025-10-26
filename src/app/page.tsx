@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { StatisticsSection } from "@/components/sections/StatisticsSection";
 import { ProgramsSection } from "@/components/sections/ProgramsSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import Link from "next/link";
 
 export default function Home() {
@@ -16,6 +17,9 @@ export default function Home() {
 
       {/* Programs Section */}
       <ProgramsSection />
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
 
       {/* CTA Section */}
       <section className="py-20 bg-bitcoin text-white">

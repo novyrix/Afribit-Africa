@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyWebhookSignature } from '@/lib/btcpay';
 import { prisma } from '@/lib/prisma';
+import { sendEmail } from '@/lib/email';
+import { donationConfirmationEmail, adminDonationNotification } from '@/lib/email-templates';
 
 export async function POST(request: NextRequest) {
   try {
@@ -125,9 +127,48 @@ export async function POST(request: NextRequest) {
 
       // TODO: Send confirmation email to donor
       // This will be implemented in Task 7 (Email System)
-      if (newStatus === 'COMPLETED' && donation.donorEmail) {
+      if (newStatus === 'COMPLETED' && donation.donorEmail && donation.btcpayInvoiceId) {
+        // Send donor confirmation email
+        const donorEmailTemplate = donationConfirmationEmail({
+          donorName: donation.donorName || 'Supporter',
+          amount: donation.amount.toString(),
+          currency: donation.currency,
+          program: donation.program || undefined,
+          invoiceId: donation.btcpayInvoiceId,
+          isAnonymous: donation.isAnonymous,
+        });
+
+        await sendEmail({
+          to: donation.donorEmail,
+          subject: donorEmailTemplate.subject,
+          html: donorEmailTemplate.html,
+        }).catch(error => {
+          console.error('Failed to send donor confirmation email:', error);
+        });
+
+        // Send admin notification email
+        if (process.env.ADMIN_EMAIL) {
+          const adminEmailTemplate = adminDonationNotification({
+            donorName: donation.donorName || 'Anonymous',
+            donorEmail: donation.donorEmail || undefined,
+            amount: donation.amount.toString(),
+            currency: donation.currency,
+            program: donation.program || undefined,
+            invoiceId: donation.btcpayInvoiceId,
+            isAnonymous: donation.isAnonymous,
+          });
+
+          await sendEmail({
+            to: process.env.ADMIN_EMAIL,
+            subject: adminEmailTemplate.subject,
+            html: adminEmailTemplate.html,
+          }).catch(error => {
+            console.error('Failed to send admin notification email:', error);
+          });
+        }
+
         console.log(
-          `TODO: Send confirmation email to ${donation.donorEmail} for donation #${donation.id}`
+          `Confirmation email sent to ${donation.donorEmail} for donation #${donation.id}`
         );
       }
 

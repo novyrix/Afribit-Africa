@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { sendEmail } from '@/lib/email'
+import { contactFormNotification } from '@/lib/email-templates'
 
 // Validation schema
 const contactSchema = z.object({
@@ -67,8 +69,26 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // TODO: Send email notification to admin
-    // This can be implemented later with Nodemailer
+    // Send admin notification email
+    if (process.env.ADMIN_EMAIL) {
+      const emailTemplate = contactFormNotification({
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        subject: validatedData.subject,
+        message: validatedData.message,
+        submittedAt: submission.createdAt,
+      });
+
+      await sendEmail({
+        to: process.env.ADMIN_EMAIL,
+        subject: emailTemplate.subject,
+        html: emailTemplate.html,
+      }).catch(error => {
+        console.error('Failed to send admin notification email:', error);
+        // Don't fail the request if email fails
+      });
+    }
 
     return NextResponse.json({
       success: true,

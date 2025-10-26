@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { sendEmail } from '@/lib/email'
+import { newsletterWelcomeEmail } from '@/lib/email-templates'
 
 // Validation schema
 const newsletterSchema = z.object({
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new subscriber
-    await prisma.subscriber.create({
+    const subscriber = await prisma.subscriber.create({
       data: {
         email: validatedData.email,
         name: validatedData.name || null,
@@ -49,8 +51,19 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // TODO: Send welcome email
-    // This can be implemented later with Nodemailer
+    // Send welcome email
+    const emailTemplate = newsletterWelcomeEmail({
+      name: validatedData.name,
+    });
+
+    await sendEmail({
+      to: subscriber.email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+    }).catch(error => {
+      console.error('Failed to send welcome email:', error);
+      // Don't fail the request if email fails
+    });
 
     return NextResponse.json({
       success: true,

@@ -39,8 +39,11 @@ export interface ProgramCard {
   description: string
   image: string
   slug: string
+  icon?: string
   goal?: number
   raised?: number
+  category?: string
+  features?: string[]
 }
 
 export interface TestimonialCard {

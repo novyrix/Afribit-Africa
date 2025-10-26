@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Container } from '@/components/layout/Container';
 import { DonationModal } from '@/components/donations/DonationModal';
 import { ImpactCalculator } from '@/components/donations/ImpactCalculator';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/animations';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -115,7 +116,7 @@ export default function DonatePage() {
         {/* Hero Section */}
         <section className="section-hero bg-linear-to-b from-primary/10 to-background">
           <Container>
-            <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
+            <ScrollReveal className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
               <h1 className="text-4xl md:text-5xl font-bold">
                 Support Bitcoin Adoption in Africa
               </h1>
@@ -132,7 +133,7 @@ export default function DonatePage() {
                   <a href="#impact">See Your Impact</a>
                 </Button>
               </div>
-            </div>
+            </ScrollReveal>
           </Container>
         </section>
 

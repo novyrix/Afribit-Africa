@@ -3,6 +3,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ===================================
+   SMOOTH SCROLL BEHAVIOR
+   =================================== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed header */
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 :root {
   /* Afribit Africa Brand Colors */
   --bitcoin-orange: #F7931A;

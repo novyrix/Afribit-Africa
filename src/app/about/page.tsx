@@ -4,6 +4,7 @@ import { Container } from '@/components/layout/Container';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { YouTubeEmbed } from '@/components/ui/youtube-embed';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/animations';
 import { teamMembers } from '@/data/team';
 import { partners } from '@/data/partners';
 import { timeline } from '@/data/timeline';
@@ -31,7 +32,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="section-hero bg-linear-to-b from-primary/10 to-background">
         <Container>
-          <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+          <ScrollReveal className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
             <h1 className="text-4xl md:text-5xl font-bold">
               Empowering Africa Through Bitcoin
             </h1>
@@ -47,7 +48,7 @@ export default function AboutPage() {
                 <Link href="/contact">Get Involved</Link>
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
         </Container>
       </section>
 
@@ -56,50 +57,52 @@ export default function AboutPage() {
         <Container>
           <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
             {/* Mission */}
-            <Card className="p-6 md:p-8 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Target className="h-8 w-8 text-primary" />
+            <ScrollReveal direction="left">
+              <Card className="p-6 md:p-8 space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-primary/10 rounded-full">
+                    <Target className="h-8 w-8 text-primary" />
+                  </div>
+                  <h2 className="text-3xl font-bold">Our Mission</h2>
                 </div>
-                <h2 className="text-3xl font-bold">Our Mission</h2>
-              </div>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                To provide accessible Bitcoin education and infrastructure that empowers African
-                communities to achieve financial sovereignty, economic opportunity, and protection
-                against currency devaluation. We believe every person deserves access to sound money
-                and the freedom it brings.
-              </p>
-            </Card>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  To provide accessible Bitcoin education and infrastructure that empowers African
+                  communities to achieve financial sovereignty, economic opportunity, and protection
+                  against currency devaluation. We believe every person deserves access to sound money
+                  and the freedom it brings.
+                </p>
+              </Card>
+            </ScrollReveal>
 
             {/* Vision */}
-            <Card className="p-6 md:p-8 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Eye className="h-8 w-8 text-primary" />
+            <ScrollReveal direction="right" delay={0.2}>
+              <Card className="p-6 md:p-8 space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-primary/10 rounded-full">
+                    <Eye className="h-8 w-8 text-primary" />
+                  </div>
+                  <h2 className="text-3xl font-bold">Our Vision</h2>
                 </div>
-                <h2 className="text-3xl font-bold">Our Vision</h2>
-              </div>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                A thriving African Bitcoin economy where communities are economically empowered,
-                merchants accept digital payments seamlessly, and financial inclusion is a reality
-                for all. We envision Africa as a global leader in Bitcoin adoption and innovation.
-              </p>
-            </Card>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  A thriving African Bitcoin economy where communities are economically empowered,
+                  merchants accept digital payments seamlessly, and financial inclusion is a reality
+                  for all. We envision Africa as a global leader in Bitcoin adoption and innovation.
+                </p>
+              </Card>
+            </ScrollReveal>
           </div>
         </Container>
-      </section>
-
-      {/* Core Values */}
+      </section>      {/* Core Values */}
       <section className="section-lg bg-secondary/30">
         <Container>
-          <div className="text-center space-y-4 mb-12 md:mb-16">
+          <ScrollReveal className="text-center space-y-4 mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold">Our Core Values</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Principles that guide everything we do at Afribit Africa
             </p>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: <Heart className="h-8 w-8" />,
@@ -126,17 +129,19 @@ export default function AboutPage() {
                   'Constantly exploring new ways to make Bitcoin accessible, practical, and beneficial.',
               },
             ].map((value, index) => (
-              <Card key={index} className="p-6 md:p-8 text-center space-y-4 border-2 hover:border-bitcoin/20 hover:shadow-lg hover:-translate-y-1 transition-all group">
-                <div className="flex justify-center">
-                  <div className="bg-bitcoin/10 group-hover:bg-bitcoin p-4 rounded-full transition-colors">
-                    <div className="text-primary group-hover:text-white transition-colors">{value.icon}</div>
+              <StaggerItem key={index}>
+                <Card className="p-6 md:p-8 text-center space-y-4 border-2 hover:border-bitcoin/20 hover:shadow-lg hover:-translate-y-1 transition-all group h-full">
+                  <div className="flex justify-center">
+                    <div className="bg-bitcoin/10 group-hover:bg-bitcoin p-4 rounded-full transition-colors">
+                      <div className="text-primary group-hover:text-white transition-colors">{value.icon}</div>
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{value.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-              </Card>
+                  <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{value.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                </Card>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </Container>
       </section>
 

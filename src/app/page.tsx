@@ -7,6 +7,7 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import { StructuredData } from "@/components/StructuredData";
 import { getBreadcrumbSchema } from "@/lib/metadata";
+import { ScrollReveal } from "@/components/animations";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -46,7 +47,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="section-lg bg-gray-900 text-white">
         <Container>
-          <div className="max-w-2xl mx-auto text-center space-y-6 md:space-y-8">
+          <ScrollReveal className="max-w-2xl mx-auto text-center space-y-6 md:space-y-8">
             <h2 className="text-3xl md:text-4xl font-bold">Support Our Mission</h2>
             <p className="text-xl opacity-90">
               Your Bitcoin donation directly funds education, merchant onboarding, and community development in Kibera.
@@ -54,7 +55,7 @@ export default function Home() {
             <Button asChild size="lg" variant="gradient">
               <Link href="/donate">Donate with Bitcoin</Link>
             </Button>
-          </div>
+          </ScrollReveal>
         </Container>
       </section>
     </>

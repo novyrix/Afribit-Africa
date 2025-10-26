@@ -3,6 +3,7 @@ import { ContactForm } from "@/components/forms/ContactForm"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { StructuredData } from "@/components/StructuredData"
 import { getBreadcrumbSchema } from "@/lib/metadata"
+import { ScrollReveal } from "@/components/animations"
 import { Mail, MapPin, MessageSquare } from "lucide-react"
 import type { Metadata } from "next"
 
@@ -29,14 +30,14 @@ export default function ContactPage() {
       <StructuredData data={breadcrumbSchema} />
       <Container>
         {/* Page Header */}
-        <div className="text-center space-y-4 mb-16">
+        <ScrollReveal className="text-center space-y-4 mb-16">
           <h1 className="text-4xl md:text-5xl font-bold">
             Get in Touch
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Have questions about our programs or want to get involved? We&apos;d love to hear from you.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Contact Information Cards */}

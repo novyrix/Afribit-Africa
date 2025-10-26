@@ -98,12 +98,13 @@ export default function RootLayout({
   const websiteSchema = getWebsiteSchema();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <StructuredData data={[organizationSchema, websiteSchema]} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <Header />
         <main className="min-h-screen">

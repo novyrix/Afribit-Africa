@@ -116,6 +116,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* ============================================
+   BASE RESET & DEFAULTS
+   ============================================ */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -133,26 +136,91 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
-/* Smooth scrolling */
+/* ============================================
+   SMOOTH SCROLLING & ANIMATIONS
+   ============================================ */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   SELECTION & FOCUS STYLES
+   ============================================ */
 ::selection {
   background-color: var(--bitcoin-orange);
   color: white;
 }
 
-/* Focus visible outline */
 :focus-visible {
   outline: 2px solid var(--bitcoin-orange);
   outline-offset: 2px;
+  border-radius: 2px;
 }
 
-/* Utility classes */
+/* ============================================
+   SECTION SPACING & LAYOUT
+   ============================================ */
+section {
+  position: relative;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* Section spacing variations */
+.section-sm {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.section-md {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section-lg {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.section-xl {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+/* ============================================
+   CONTAINER UTILITY
+   ============================================ */
 .container {
   width: 100%;
   margin-left: auto;
@@ -164,6 +232,8 @@ html {
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
@@ -176,6 +246,8 @@ html {
 @media (min-width: 1024px) {
   .container {
     max-width: 1024px;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -191,6 +263,246 @@ html {
   }
 }
 
+/* ============================================
+   TYPOGRAPHY ENHANCEMENTS
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3.5rem;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+  }
+  
+  h3 {
+    font-size: 2rem;
+  }
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* ============================================
+   BUTTON ENHANCEMENTS
+   ============================================ */
+button, .btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active, .btn:active {
+  transform: scale(0.98);
+}
+
+/* Button hover ripple effect */
+button::before, .btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before, .btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ============================================
+   CARD ENHANCEMENTS
+   ============================================ */
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-scale:hover {
+  transform: scale(1.02);
+}
+
+/* ============================================
+   LINK STYLES
+   ============================================ */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--bitcoin-orange);
+}
+
+/* ============================================
+   GRADIENTS & BACKGROUNDS
+   ============================================ */
+.gradient-bitcoin {
+  background: linear-gradient(135deg, var(--bitcoin-orange) 0%, #ffa940 100%);
+}
+
+.gradient-orange-red {
+  background: linear-gradient(135deg, var(--bitcoin-orange) 0%, var(--afribit-red) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--bitcoin-orange) 0%, var(--afribit-red) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.4s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--bitcoin-orange);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -225,6 +537,25 @@ html {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-balance {
+  text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   TAILWIND LAYERS
+   ============================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -234,3 +565,18 @@ html {
   }
 }
 
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.05;
+  }
+}

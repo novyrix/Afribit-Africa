@@ -1,17 +1,32 @@
 import { Container } from "@/components/layout/Container"
 import { ContactForm } from "@/components/forms/ContactForm"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { StructuredData } from "@/components/StructuredData"
+import { getBreadcrumbSchema } from "@/lib/metadata"
 import { Mail, MapPin, MessageSquare } from "lucide-react"
 import type { Metadata } from "next"
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://afribit.africa';
+
 export const metadata: Metadata = {
-  title: "Contact Us - Afribit Africa",
-  description: "Get in touch with Afribit Africa. We're here to answer your questions about Bitcoin adoption in Kenya.",
-}
+  title: "Contact Us",
+  description: "Get in touch with Afribit Africa. We're here to answer your questions about Bitcoin adoption in Africa, our programs, and how you can get involved.",
+  openGraph: {
+    title: "Contact Afribit Africa",
+    description: "Have questions about our Bitcoin programs? We'd love to hear from you.",
+    url: `${SITE_URL}/contact`,
+  },
+};
 
 export default function ContactPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' },
+  ]);
+
   return (
     <div className="min-h-screen py-20">
+      <StructuredData data={breadcrumbSchema} />
       <Container>
         {/* Page Header */}
         <div className="text-center mb-16">

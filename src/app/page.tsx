@@ -5,11 +5,29 @@ import { StatisticsSection } from "@/components/sections/StatisticsSection";
 import { ProgramsSection } from "@/components/sections/ProgramsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
+import { StructuredData } from "@/components/StructuredData";
+import { getBreadcrumbSchema } from "@/lib/metadata";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Afribit Africa",
+  description: "Empowering Africa through Bitcoin education, financial inclusion, and community development. Join us in bringing financial freedom to African communities with programs in education, waste management, and business acceleration.",
+  openGraph: {
+    title: "Afribit Africa - Empowering Communities Through Bitcoin",
+    description: "Join us in bringing Bitcoin financial freedom to African communities. Support education, merchant onboarding, and sustainable development initiatives.",
+  },
+};
 
 export default function Home() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+  ]);
+
   return (
     <>
+      <StructuredData data={breadcrumbSchema} />
+      
       {/* Hero Section with Video Background */}
       <HeroSection />
 

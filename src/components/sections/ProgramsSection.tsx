@@ -46,7 +46,7 @@ function ProgressBar({ raised, goal }: { raised: number; goal: number }) {
 
 export function ProgramsSection() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="section-lg bg-gray-50">
       <Container>
         {/* Section Header */}
         <motion.div
@@ -54,9 +54,9 @@ export function ProgramsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center space-y-4 mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold">
             Our Programs
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -65,7 +65,7 @@ export function ProgramsSection() {
         </motion.div>
 
         {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
           {programs.map((program, index) => {
             const Icon = iconMap[program.icon as keyof typeof iconMap]
             

@@ -7,7 +7,7 @@ import { Mail } from "lucide-react"
 
 export function NewsletterSection() {
   return (
-    <section className="py-20 bg-bitcoin text-white">
+    <section className="section-lg bg-bitcoin text-white">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

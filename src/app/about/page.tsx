@@ -29,18 +29,18 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-linear-to-b from-primary/10 to-background py-20">
+      <section className="section-hero bg-linear-to-b from-primary/10 to-background">
         <Container>
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+            <h1 className="text-4xl md:text-5xl font-bold">
               Empowering Africa Through Bitcoin
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-muted-foreground">
               We are building a Bitcoin-powered future for African communities, one merchant, one
               transaction, and one educated mind at a time.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
+              <Button size="lg" variant="gradient" asChild>
                 <Link href="/donate">Support Our Mission</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -52,12 +52,12 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20">
+      <section className="section-lg">
         <Container>
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
             {/* Mission */}
-            <Card className="p-8">
-              <div className="flex items-center gap-3 mb-6">
+            <Card className="p-6 md:p-8 space-y-6">
+              <div className="flex items-center gap-3">
                 <div className="p-3 bg-primary/10 rounded-full">
                   <Target className="h-8 w-8 text-primary" />
                 </div>
@@ -72,8 +72,8 @@ export default function AboutPage() {
             </Card>
 
             {/* Vision */}
-            <Card className="p-8">
-              <div className="flex items-center gap-3 mb-6">
+            <Card className="p-6 md:p-8 space-y-6">
+              <div className="flex items-center gap-3">
                 <div className="p-3 bg-primary/10 rounded-full">
                   <Eye className="h-8 w-8 text-primary" />
                 </div>
@@ -90,16 +90,16 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-20 bg-secondary/30">
+      <section className="section-lg bg-secondary/30">
         <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Our Core Values</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Principles that guide everything we do at Afribit Africa
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: <Heart className="h-8 w-8" />,
@@ -126,9 +126,9 @@ export default function AboutPage() {
                   'Constantly exploring new ways to make Bitcoin accessible, practical, and beneficial.',
               },
             ].map((value, index) => (
-              <Card key={index} className="p-6 text-center">
-                <div className="flex justify-center mb-4 text-primary">{value.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{value.title}</h3>
+              <Card key={index} className="p-6 text-center space-y-4">
+                <div className="flex justify-center text-primary">{value.icon}</div>
+                <h3 className="text-xl font-bold">{value.title}</h3>
                 <p className="text-muted-foreground">{value.description}</p>
               </Card>
             ))}
@@ -137,16 +137,16 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-20">
+      <section className="section-lg">
         <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Team</h2>
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Meet Our Team</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Dedicated individuals working tirelessly to bring Bitcoin to Africa
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {teamMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden">
                 <div className="aspect-square bg-secondary relative">
@@ -159,11 +159,11 @@ export default function AboutPage() {
                     }}
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                  <p className="text-sm text-primary mb-3">{member.role}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
-                  <div className="flex gap-3">
+                <div className="p-6 space-y-4">
+                  <h3 className="text-xl font-bold">{member.name}</h3>
+                  <p className="text-sm text-primary">{member.role}</p>
+                  <p className="text-sm text-muted-foreground">{member.bio}</p>
+                  <div className="flex gap-3 pt-2">
                     {member.email && (
                       <a
                         href={`mailto:${member.email}`}
@@ -201,10 +201,10 @@ export default function AboutPage() {
       </section>
 
       {/* Impact Timeline */}
-      <section className="py-20 bg-secondary/30">
+      <section className="section-lg bg-secondary/30">
         <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h2>
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Our Journey</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Key milestones in our mission to bring Bitcoin to Africa
             </p>
@@ -265,25 +265,25 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20">
+      <section className="section-lg">
         <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Impact in Numbers</h2>
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Our Impact in Numbers</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Real results from our work across Africa
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
               { value: '2000+', label: 'Bitcoin Transactions', icon: <TrendingUp /> },
               { value: '200+', label: 'Merchants Onboarded', icon: <Users /> },
               { value: '1000+', label: 'Community Members', icon: <Users /> },
               { value: '5', label: 'Active Programs', icon: <CheckCircle /> },
             ].map((stat, index) => (
-              <Card key={index} className="p-6 text-center">
-                <div className="flex justify-center mb-3 text-primary">{stat.icon}</div>
-                <p className="text-4xl font-bold mb-2">{stat.value}</p>
+              <Card key={index} className="p-6 text-center space-y-3">
+                <div className="flex justify-center text-primary">{stat.icon}</div>
+                <p className="text-4xl font-bold">{stat.value}</p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </Card>
             ))}
@@ -292,10 +292,10 @@ export default function AboutPage() {
       </section>
 
       {/* Media Coverage Section */}
-      <section className="py-20">
+      <section className="section-lg bg-secondary/30">
         <Container>
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <div className="flex items-center justify-center gap-3">
               <Tv className="h-10 w-10 text-primary" />
               <h2 className="text-3xl md:text-4xl font-bold">Media Coverage</h2>
             </div>
@@ -304,16 +304,16 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
             {mediaCoverage.map((media) => (
-              <Card key={media.id} className="overflow-hidden">
+              <Card key={media.id} className="overflow-hidden space-y-0">
                 <YouTubeEmbed videoId={media.youtubeId} title={media.title} />
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-primary">{media.outlet}</span>
                     <span className="text-xs text-muted-foreground">{media.date}</span>
                   </div>
-                  <h3 className="text-lg font-bold mb-2">{media.title}</h3>
+                  <h3 className="text-lg font-bold">{media.title}</h3>
                   <p className="text-sm text-muted-foreground">{media.description}</p>
                 </div>
               </Card>
@@ -323,16 +323,16 @@ export default function AboutPage() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="section-lg">
         <Container>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Partners</h2>
+          <div className="text-center space-y-4 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Our Partners</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Working together with organizations that share our vision
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
             {partners.map((partner, index) => (
               <div
                 key={index}

@@ -25,12 +25,12 @@ export default function ContactPage() {
   ]);
 
   return (
-    <div className="min-h-screen py-20">
+    <div className="min-h-screen section-hero">
       <StructuredData data={breadcrumbSchema} />
       <Container>
         {/* Page Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center space-y-4 mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold">
             Get in Touch
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -38,7 +38,7 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Contact Information Cards */}
           <div className="lg:col-span-1 space-y-6">
             <Card>

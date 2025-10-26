@@ -32,16 +32,16 @@ export default function ProgramsPage() {
     <>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="bg-linear-to-b from-primary/10 to-background py-20">
+        <section className="section-hero bg-linear-to-b from-primary/10 to-background">
           <Container>
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Programs</h1>
-              <p className="text-xl text-muted-foreground mb-8">
+            <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+              <h1 className="text-4xl md:text-5xl font-bold">Our Programs</h1>
+              <p className="text-xl text-muted-foreground">
                 Five strategic initiatives bringing Bitcoin adoption and economic empowerment to
                 African communities. Every donation directly supports these life-changing programs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" onClick={() => setIsDonationModalOpen(true)}>
+                <Button size="lg" variant="gradient" onClick={() => setIsDonationModalOpen(true)}>
                   <Target className="mr-2 h-5 w-5" />
                   Support All Programs
                 </Button>
@@ -54,7 +54,7 @@ export default function ProgramsPage() {
         </section>
 
         {/* Overall Progress */}
-        <section className="py-12 bg-secondary/30">
+        <section className="section-md bg-secondary/30">
           <Container>
             <Card className="p-8">
               <div className="grid md:grid-cols-3 gap-8">
@@ -193,25 +193,25 @@ export default function ProgramsPage() {
         </section>
 
         {/* Impact Section */}
-        <section className="py-20 bg-secondary/30">
+        <section className="section-lg bg-secondary/30">
           <Container>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Program Impact</h2>
+            <div className="text-center space-y-4 mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold">Program Impact</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Real results from your donations across all our programs
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { value: '500+', label: 'People Trained', icon: <Target /> },
                 { value: '200+', label: 'Merchants Onboarded', icon: <TrendingUp /> },
                 { value: '30+', label: 'Boda-Boda Drivers', icon: <TrendingUp /> },
                 { value: '100+', label: 'Businesses Supported', icon: <CheckCircle /> },
               ].map((stat, index) => (
-                <Card key={index} className="p-6 text-center">
-                  <div className="flex justify-center mb-3 text-primary">{stat.icon}</div>
-                  <p className="text-4xl font-bold mb-2">{stat.value}</p>
+                <Card key={index} className="p-6 text-center space-y-3">
+                  <div className="flex justify-center text-primary">{stat.icon}</div>
+                  <p className="text-4xl font-bold">{stat.value}</p>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Card>
               ))}
@@ -220,13 +220,13 @@ export default function ProgramsPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-linear-to-r from-primary to-orange-500 text-white">
+        <section className="section-lg bg-linear-to-r from-primary to-orange-500 text-white">
           <Container>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
+              <h2 className="text-3xl md:text-4xl font-bold">
                 Every Donation Makes a Difference
               </h2>
-              <p className="text-xl mb-8 text-white/90">
+              <p className="text-xl text-white/90">
                 Choose a program that resonates with you, or support all five to maximize your
                 impact across Africa.
               </p>

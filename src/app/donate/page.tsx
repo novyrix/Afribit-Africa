@@ -118,18 +118,18 @@ export default function DonatePage() {
     <>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="bg-linear-to-b from-primary/10 to-background py-20">
+        <section className="section-hero bg-linear-to-b from-primary/10 to-background">
           <Container>
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
+              <h1 className="text-4xl md:text-5xl font-bold">
                 Support Bitcoin Adoption in Africa
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl text-muted-foreground">
                 Your donation empowers communities, educates merchants, and builds a Bitcoin-powered
                 future for Africa.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button onClick={() => handleDonate()} size="lg" className="text-lg">
+                <Button onClick={() => handleDonate()} size="lg" variant="gradient" className="text-lg">
                   <Bitcoin className="mr-2 h-5 w-5" />
                   Donate Now
                 </Button>
@@ -142,18 +142,18 @@ export default function DonatePage() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-16 bg-secondary/30">
+        <section className="section-md bg-secondary/30">
           <Container>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { label: 'Total Raised', value: '$2,149', icon: <TrendingUp /> },
                 { label: 'Donors', value: '127', icon: <Users /> },
                 { label: 'Merchants Helped', value: '200+', icon: <Users /> },
                 { label: 'Active Programs', value: '5', icon: <CheckCircle /> },
               ].map((stat, index) => (
-                <Card key={index} className="p-6 text-center">
-                  <div className="flex justify-center mb-2 text-primary">{stat.icon}</div>
-                  <p className="text-3xl font-bold mb-1">{stat.value}</p>
+                <Card key={index} className="p-6 text-center space-y-3">
+                  <div className="flex justify-center text-primary">{stat.icon}</div>
+                  <p className="text-3xl font-bold">{stat.value}</p>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Card>
               ))}
@@ -162,29 +162,29 @@ export default function DonatePage() {
         </section>
 
         {/* Donation Tiers */}
-        <section className="py-20">
+        <section className="section-lg">
           <Container>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Impact Level</h2>
+            <div className="text-center space-y-4 mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold">Choose Your Impact Level</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Every contribution makes a difference. Select a tier or choose a custom amount.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
               {DONATION_TIERS.map((tier, index) => (
                 <Card
                   key={index}
-                  className="p-6 hover:shadow-lg transition-shadow cursor-pointer group"
+                  className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer group"
                   onClick={() => handleDonate(tier.amount)}
                 >
-                  <div className={`${tier.color} text-white p-3 rounded-full w-fit mb-4`}>
+                  <div className={`${tier.color} text-white p-3 rounded-full w-fit mb-4 group-hover:scale-110 transition-transform`}>
                     {tier.icon}
                   </div>
                   <h3 className="text-2xl font-bold mb-2">{tier.title}</h3>
                   <p className="text-3xl font-bold text-primary mb-4">${tier.amount}</p>
                   <p className="text-muted-foreground mb-6">{tier.description}</p>
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full group-hover:bg-primary group-hover:text-white" variant="outline">
                     Select
                   </Button>
                 </Card>
@@ -192,10 +192,10 @@ export default function DonatePage() {
 
               {/* Custom Amount Card */}
               <Card
-                className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-2 border-dashed"
+                className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 border-dashed"
                 onClick={() => handleDonate()}
               >
-                <div className="bg-linear-to-br from-primary to-orange-500 text-white p-3 rounded-full w-fit mb-4">
+                <div className="bg-linear-to-br from-primary to-orange-500 text-white p-3 rounded-full w-fit mb-4 hover:scale-110 transition-transform">
                   <Heart className="h-6 w-6" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Custom Amount</h3>
@@ -212,7 +212,7 @@ export default function DonatePage() {
         </section>
 
         {/* Impact Calculator */}
-        <section id="impact" className="py-20 bg-secondary/30">
+        <section id="impact" className="section-lg bg-secondary/30">
           <Container>
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-8">
@@ -227,19 +227,19 @@ export default function DonatePage() {
         </section>
 
         {/* Impact Stories */}
-        <section className="py-20">
+        <section className="section-lg">
           <Container>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Your Donations at Work</h2>
+            <div className="text-center space-y-4 mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold">Your Donations at Work</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Real stories from people whose lives have been transformed by Bitcoin education
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
               {IMPACT_STORIES.map((story, index) => (
-                <Card key={index} className="p-6">
-                  <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-secondary">
+                <Card key={index} className="p-6 space-y-4">
+                  <div className="aspect-square rounded-lg overflow-hidden bg-secondary">
                     <img
                       src={story.image}
                       alt={story.name}
@@ -249,8 +249,8 @@ export default function DonatePage() {
                       }}
                     />
                   </div>
-                  <h3 className="text-xl font-bold mb-1">{story.name}</h3>
-                  <p className="text-sm text-primary mb-3">{story.role}</p>
+                  <h3 className="text-xl font-bold">{story.name}</h3>
+                  <p className="text-sm text-primary">{story.role}</p>
                   <p className="text-muted-foreground italic">&ldquo;{story.story}&rdquo;</p>
                 </Card>
               ))}
@@ -259,13 +259,13 @@ export default function DonatePage() {
         </section>
 
         {/* Why Donate Section */}
-        <section className="py-20 bg-secondary/30">
+        <section className="section-lg bg-secondary/30">
           <Container>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Your Donation Matters</h2>
+            <div className="text-center space-y-4 mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold">Why Your Donation Matters</h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {[
                 {
                   icon: <Shield className="h-12 w-12" />,
@@ -286,9 +286,9 @@ export default function DonatePage() {
                     'Your donation connects African businesses to the global economy, opening new markets and opportunities.',
                 },
               ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="flex justify-center mb-4 text-primary">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <div key={index} className="text-center space-y-4">
+                  <div className="flex justify-center text-primary">{item.icon}</div>
+                  <h3 className="text-xl font-bold">{item.title}</h3>
                   <p className="text-muted-foreground">{item.description}</p>
                 </div>
               ))}
@@ -297,11 +297,11 @@ export default function DonatePage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20">
+        <section className="section-lg">
           <Container>
             <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <div className="text-center space-y-4 mb-12 md:mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold">
                   Frequently Asked Questions
                 </h2>
                 <p className="text-lg text-muted-foreground">
@@ -326,13 +326,13 @@ export default function DonatePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-linear-to-r from-primary to-orange-500 text-white">
+        <section className="section-lg bg-linear-to-r from-primary to-orange-500 text-white">
           <Container>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
+              <h2 className="text-3xl md:text-4xl font-bold">
                 Ready to Make a Difference?
               </h2>
-              <p className="text-xl mb-8 text-white/90">
+              <p className="text-xl text-white/90">
                 Join hundreds of donors supporting Bitcoin adoption across Africa. Every satoshi
                 counts.
               </p>

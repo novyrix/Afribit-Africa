@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test-db": "tsx scripts/test-db.ts",
     "test-mysql": "tsx scripts/test-mysql-direct.ts",
+    "quick-test": "tsx scripts/quick-test.ts",
     "list-db": "tsx scripts/list-databases.ts",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",

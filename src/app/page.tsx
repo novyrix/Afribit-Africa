@@ -1,53 +1,17 @@
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { StatisticsSection } from "@/components/sections/StatisticsSection";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      {/* Hero Section - Temporary Placeholder */}
-      <section className="relative py-20 md:py-32 bg-gradient-to-b from-gray-50 to-white">
-        <Container>
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Empowering African Communities Through{" "}
-              <span className="text-bitcoin">Bitcoin</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Building a sustainable future with Bitcoin education, merchant onboarding, 
-              and community development initiatives in Kenya.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-bitcoin hover:bg-bitcoin-dark">
-                <Link href="/donate">Donate Now</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/programs">View Programs</Link>
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* Hero Section with Video Background */}
+      <HeroSection />
 
-      {/* Statistics Section - Placeholder */}
-      <section className="py-16 bg-white border-y">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-bitcoin">2,000+</div>
-              <div className="text-muted-foreground mt-2">Transactions</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-bitcoin">200+</div>
-              <div className="text-muted-foreground mt-2">Merchants Onboarded</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-bitcoin">5</div>
-              <div className="text-muted-foreground mt-2">Active Programs</div>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* Statistics Section with Animated Counters */}
+      <StatisticsSection />
 
       {/* Programs Preview - Placeholder */}
       <section className="py-20 bg-gray-50">

@@ -44,3 +44,12 @@ next-env.d.ts
 
 # Exclude scripts folder (development only)
 /scripts
+
+# Large video files - host externally or use CDN
+public/Videos/Complilation\ of\ people\ buying\ products\ with\ bitcoin.mp4
+public/Videos/News\ and\ major\ shoutouts/FirstPost.mp4
+public/Videos/News\ and\ major\ shoutouts/NAKAMOTO.mp4
+public/Videos/Merchant\ Interviews/Grace\ Interview-1.mp4
+public/Videos/Merchant\ Interviews/Mercy\ Interview.mp4
+public/Videos/Merchant\ Interviews/Fridah\ Interview-1.mp4
+public/Videos/Merchant\ Interviews/Lilian\ Interview.mp4

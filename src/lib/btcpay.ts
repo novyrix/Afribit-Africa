@@ -1,6 +1,5 @@
-import { OpenAPI, InvoicesService, StoresService } from 'btcpay-greenfield-node-client'
+import { OpenAPI, InvoicesService } from 'btcpay-greenfield-node-client'
 import crypto from 'crypto'
-import type { CreateInvoiceRequest, InvoiceData as BTCPayInvoiceData } from 'btcpay-greenfield-node-client'
 
 // BTCPay Server configuration
 const BTCPAY_HOST = process.env.BTCPAY_HOST || 'https://btcpay.afribit.africa'

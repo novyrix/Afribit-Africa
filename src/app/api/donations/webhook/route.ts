@@ -104,14 +104,21 @@ export async function POST(request: NextRequest) {
       });
 
       // Update program raised amount if completed
-      if (newStatus === 'COMPLETED' && donation.program) {
-        const programRecord = await prisma.program.findUnique({
-          where: { slug: donation.program },
-        });
+      let completedProgramName = donation.program || undefined;
+
+      if (newStatus === 'COMPLETED' && (donation.programId || donation.program)) {
+        const programRecord = donation.programId
+          ? await prisma.program.findUnique({
+              where: { id: donation.programId },
+            })
+          : await prisma.program.findUnique({
+              where: { slug: donation.program! },
+            });
 
         if (programRecord) {
+          completedProgramName = programRecord.name;
           await prisma.program.update({
-            where: { slug: donation.program },
+            where: { id: programRecord.id },
             data: {
               raised: {
                 increment: parseFloat(donation.amount.toString()),
@@ -133,7 +140,7 @@ export async function POST(request: NextRequest) {
           donorName: donation.donorName || 'Supporter',
           amount: donation.amount.toString(),
           currency: donation.currency,
-          program: donation.program || undefined,
+          program: completedProgramName,
           invoiceId: donation.btcpayInvoiceId,
           isAnonymous: donation.isAnonymous,
         });
@@ -153,7 +160,7 @@ export async function POST(request: NextRequest) {
             donorEmail: donation.donorEmail || undefined,
             amount: donation.amount.toString(),
             currency: donation.currency,
-            program: donation.program || undefined,
+            program: completedProgramName,
             invoiceId: donation.btcpayInvoiceId,
             isAnonymous: donation.isAnonymous,
           });

@@ -30,9 +30,11 @@ export async function POST(request: NextRequest) {
       isAnonymous,
     } = validatedData;
 
+    let programRecord = null;
+
     // Verify program exists if program slug is provided
     if (program) {
-      const programRecord = await prisma.program.findUnique({
+      programRecord = await prisma.program.findUnique({
         where: { slug: program },
       });
 
@@ -54,8 +56,8 @@ export async function POST(request: NextRequest) {
         program: program || '',
         message: message || '',
         isAnonymous: isAnonymous,
-        itemDesc: program
-          ? `Donation to ${program}`
+        itemDesc: programRecord
+          ? `Donation to ${programRecord.name}`
           : 'General Donation to Afribit',
       },
       buyerEmail: isAnonymous ? undefined : donorEmail,
@@ -73,6 +75,7 @@ export async function POST(request: NextRequest) {
         donorName: isAnonymous ? 'Anonymous' : donorName || 'Anonymous',
         donorEmail: isAnonymous ? null : donorEmail || null,
         program: program || null,
+        programId: programRecord?.id || null,
         message: message || null,
         status: 'PENDING',
         btcpayInvoiceId: invoiceData.id,

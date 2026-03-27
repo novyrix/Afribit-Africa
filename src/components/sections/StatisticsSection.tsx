@@ -3,6 +3,7 @@
 import { Container } from "@/components/layout/Container"
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
+import type { StatItem } from "@/types"
 import { TrendingUp, Users, Zap, Heart } from "lucide-react"
 
 interface StatItemProps {
@@ -64,32 +65,18 @@ function StatItem({ icon, value, label, suffix, prefix }: StatItemProps) {
   )
 }
 
-export function StatisticsSection() {
-  const stats = [
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      value: 2000,
-      label: "Bitcoin Transactions",
-      suffix: "+",
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      value: 200,
-      label: "Merchants Onboarded",
-      suffix: "+",
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      value: 5,
-      label: "Active Programs",
-    },
-    {
-      icon: <Heart className="w-8 h-8" />,
-      value: 1000,
-      label: "Community Members",
-      suffix: "+",
-    },
-  ]
+interface StatisticsSectionProps {
+  stats: StatItem[]
+}
+
+const iconMap = {
+  TrendingUp,
+  Users,
+  Zap,
+  Heart,
+}
+
+export function StatisticsSection({ stats }: StatisticsSectionProps) {
 
   return (
     <section className="section-lg bg-white border-y">
@@ -110,9 +97,21 @@ export function StatisticsSection() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 lg:gap-12">
-          {stats.map((stat, index) => (
-            <StatItem key={index} {...stat} />
-          ))}
+          {stats.map((stat, index) => {
+            const Icon = iconMap[(stat.icon || 'TrendingUp') as keyof typeof iconMap] || TrendingUp
+            const numericValue = typeof stat.value === 'number' ? stat.value : Number(stat.value)
+
+            return (
+              <StatItem
+                key={`${stat.label}-${index}`}
+                icon={<Icon className="w-8 h-8" />}
+                value={Number.isFinite(numericValue) ? numericValue : 0}
+                label={stat.label}
+                suffix={stat.suffix}
+                prefix={stat.prefix}
+              />
+            )
+          })}
         </div>
       </Container>
     </section>

@@ -45,6 +45,14 @@ export interface ProgramCard {
   raised?: number
   category?: string
   features?: string[]
+  status?: string
+  locationLabel?: string
+  city?: string
+  country?: string
+  beneficiaryCount?: number
+  featured?: boolean
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface TestimonialCard {
@@ -56,6 +64,30 @@ export interface TestimonialCard {
   image?: string
   videoUrl?: string
   youtubeId?: string
+}
+
+export interface MerchantProfile {
+  id: string
+  testimonialId: string
+  slug: string
+  name: string
+  role: string
+  category: string
+  summary: string
+  story: string
+  location: string
+  neighborhood?: string
+  city: string
+  country: string
+  latitude?: number
+  longitude?: number
+  image: string
+  videoUrl?: string
+  youtubeId?: string
+  programSlug?: string
+  services: string[]
+  paymentMethods: string[]
+  featured?: boolean
 }
 
 export interface StatItem {

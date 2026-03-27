@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
-import { prisma } from '@/lib/prisma';
+import { listMerchantRoutes } from '@/lib/content/merchants';
+import { listProgramRoutes } from '@/lib/content/programs';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://afribit.africa';
 
@@ -31,6 +32,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/merchants`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -38,26 +45,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic program routes
-  try {
-    const programs = await prisma.program.findMany({
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    });
+  const [programs, merchants] = await Promise.all([listProgramRoutes(), listMerchantRoutes()]);
 
-    const programRoutes = programs.map((program) => ({
-      url: `${SITE_URL}/programs/${program.slug}`,
-      lastModified: program.updatedAt,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    }));
+  const programRoutes = programs.map((program) => ({
+    url: `${SITE_URL}/programs/${program.slug}`,
+    lastModified: program.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
 
-    return [...staticRoutes, ...programRoutes];
-  } catch (error) {
-    console.error('Error generating sitemap:', error);
-    // Return static routes only if database query fails
-    return staticRoutes;
-  }
+  const merchantRoutes = merchants.map((merchant) => ({
+    url: `${SITE_URL}/merchants/${merchant.slug}`,
+    lastModified: merchant.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...programRoutes, ...merchantRoutes];
 }

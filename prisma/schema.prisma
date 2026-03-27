@@ -1,13 +1,14 @@
 // Afribit Africa - Prisma Schema
-// Database: MySQL (Bluehost)
+// Database: PostgreSQL (Neon)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 // User model for admin access
@@ -82,7 +83,7 @@ model Post {
   title       String
   slug        String      @unique
   excerpt     String?     @db.Text
-  content     String      @db.LongText
+  content     String      @db.Text
   coverImage  String?
   author      String
   category    PostCategory
@@ -126,13 +127,16 @@ model Donation {
   message         String?  @db.Text
   isAnonymous     Boolean  @default(false)
   program         String?  // Which program they're supporting
+  programId       String?
   createdAt       DateTime @default(now())
   completedAt     DateTime?
+  programRef      Program?  @relation("ProgramDonations", fields: [programId], references: [id], onDelete: SetNull)
   
   @@map("donations")
   @@index([status])
   @@index([createdAt])
   @@index([program])
+  @@index([programId])
 }
 
 enum DonationStatus {
@@ -149,36 +153,113 @@ model Program {
   name        String   @unique
   slug        String   @unique
   description String   @db.Text
+  summary     String?  @db.Text
   coverImage  String?
   goal        Decimal? @db.Decimal(19, 2)
   raised      Decimal  @default(0) @db.Decimal(19, 2)
   isActive    Boolean  @default(true)
+  status      ProgramStatus @default(ACTIVE)
+  locationLabel String?
+  city        String?
+  country     String?
+  beneficiaryCount Int?
+  featured    Boolean  @default(false)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  donations   Donation[] @relation("ProgramDonations")
+  testimonials Testimonial[] @relation("ProgramTestimonials")
+  merchants   Merchant[] @relation("ProgramMerchants")
   
   @@map("programs")
   @@index([slug])
   @@index([isActive])
+  @@index([status])
+  @@index([featured])
+}
+
+enum ProgramStatus {
+  PLANNED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
 }
 
 // Testimonials / Success stories
 model Testimonial {
   id        String   @id @default(uuid())
+  slug      String?  @unique
   name      String
   role      String?  // e.g., "Merchant", "Community Member"
   location  String?
   quote     String   @db.Text
   image     String?
   videoUrl  String?
+  youtubeId String?
   program   String?  // Which program they're associated with
+  programId String?
+  merchantId String?
+  featured  Boolean  @default(false)
   isActive  Boolean  @default(true)
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  programRef Program? @relation("ProgramTestimonials", fields: [programId], references: [id], onDelete: SetNull)
+  merchant   Merchant? @relation("MerchantTestimonials", fields: [merchantId], references: [id], onDelete: SetNull)
+  primaryMerchant Merchant? @relation("MerchantPrimaryTestimonial")
   
   @@map("testimonials")
   @@index([isActive])
+  @@index([programId])
+  @@index([merchantId])
+}
+
+model Merchant {
+  id                 String   @id @default(uuid())
+  name               String
+  slug               String   @unique
+  summary            String   @db.Text
+  description        String?  @db.Text
+  category           String
+  status             MerchantStatus @default(ACTIVE)
+  locationLabel      String?
+  neighborhood       String?
+  city               String?
+  country            String?  @default("Kenya")
+  latitude           Decimal? @db.Decimal(10, 7)
+  longitude          Decimal? @db.Decimal(10, 7)
+  address            String?  @db.Text
+  phone              String?
+  email              String?
+  acceptsBitcoin     Boolean  @default(true)
+  paymentMethods     String?  @db.Text
+  services           String?  @db.Text
+  primaryImage       String?
+  videoUrl           String?
+  youtubeId          String?
+  featured           Boolean  @default(false)
+  programId          String?
+  primaryTestimonialId String? @unique
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  program            Program? @relation("ProgramMerchants", fields: [programId], references: [id], onDelete: SetNull)
+  testimonials       Testimonial[] @relation("MerchantTestimonials")
+  primaryTestimonial Testimonial? @relation("MerchantPrimaryTestimonial", fields: [primaryTestimonialId], references: [id], onDelete: SetNull)
+
+  @@map("merchants")
+  @@index([status])
+  @@index([category])
+  @@index([featured])
+  @@index([programId])
+  @@index([city])
+}
+
+enum MerchantStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
 }
 
 // Statistics tracking

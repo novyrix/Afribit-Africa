@@ -5,12 +5,17 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { YouTubeEmbed } from "@/components/ui/youtube-embed"
 import { motion, AnimatePresence } from "framer-motion"
-import { testimonials } from "@/data/testimonials"
+import type { TestimonialCard } from "@/types"
 import Image from "next/image"
+import Link from "next/link"
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Quote, Play } from "lucide-react"
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonials: TestimonialCard[]
+}
+
+export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
@@ -36,6 +41,10 @@ export function TestimonialsSection() {
   }
 
   const currentTestimonial = testimonials[currentIndex]
+
+  if (testimonials.length === 0) {
+    return null
+  }
 
   return (
     <section className="section-lg bg-white">
@@ -164,6 +173,12 @@ export function TestimonialsSection() {
           <p className="text-center text-sm text-muted-foreground mt-4">
             {currentIndex + 1} / {testimonials.length}
           </p>
+
+          <div className="mt-8 flex justify-center">
+            <Button variant="outline" asChild>
+              <Link href="/merchants">Explore Merchant Profiles</Link>
+            </Button>
+          </div>
         </div>
       </Container>
     </section>

@@ -64,14 +64,18 @@ export async function GET(
       });
 
       // If completed and has program, update program raised amount
-      if (donationStatus === 'COMPLETED' && donation.program) {
-        const programRecord = await prisma.program.findUnique({
-          where: { slug: donation.program },
-        });
+      if (donationStatus === 'COMPLETED' && (donation.programId || donation.program)) {
+        const programRecord = donation.programId
+          ? await prisma.program.findUnique({
+              where: { id: donation.programId },
+            })
+          : await prisma.program.findUnique({
+              where: { slug: donation.program! },
+            });
 
         if (programRecord) {
           await prisma.program.update({
-            where: { slug: donation.program },
+            where: { id: programRecord.id },
             data: {
               raised: {
                 increment: parseFloat(donation.amount.toString()),
@@ -96,6 +100,7 @@ export async function GET(
         expirationTime: invoiceStatus.expirationTime,
         checkoutLink: invoiceStatus.checkoutLink,
         program: donation.program,
+        programId: donation.programId,
       },
     });
   } catch (error) {

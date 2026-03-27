@@ -7,6 +7,9 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import { StructuredData } from "@/components/StructuredData";
 import { getBreadcrumbSchema } from "@/lib/metadata";
+import { listPrograms } from "@/lib/content/programs";
+import { listHomepageStatistics } from "@/lib/content/statistics";
+import { listTestimonials } from "@/lib/content/testimonials";
 import { ScrollReveal } from "@/components/animations";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -20,7 +23,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const [programs, statistics, testimonials] = await Promise.all([
+    listPrograms(),
+    listHomepageStatistics(),
+    listTestimonials(),
+  ]);
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },
   ]);
@@ -33,13 +41,13 @@ export default function Home() {
       <HeroSection />
 
       {/* Statistics Section with Animated Counters */}
-      <StatisticsSection />
+      <StatisticsSection stats={statistics} />
 
       {/* Programs Section */}
-      <ProgramsSection />
+      <ProgramsSection programs={programs} />
 
       {/* Testimonials Section */}
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
 
       {/* Newsletter Section */}
       <NewsletterSection />

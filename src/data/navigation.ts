@@ -1,6 +1,6 @@
 // Site navigation and footer data
 import type { NavItem, SocialLink } from "@/types"
-import { Home, Info, Grid3x3, Heart, Mail } from "lucide-react"
+import { Home, Info, Grid3x3, Heart, Mail, Store } from "lucide-react"
 
 export const mainNavigation: NavItem[] = [
   {
@@ -19,6 +19,12 @@ export const mainNavigation: NavItem[] = [
     href: "/programs",
     description: "Our community initiatives",
     icon: Grid3x3,
+  },
+  {
+    title: "Merchants",
+    href: "/merchants",
+    description: "Explore businesses using Bitcoin",
+    icon: Store,
   },
   {
     title: "Donate",
@@ -66,7 +72,7 @@ export const footerLinks = {
   ],
   programs: [
     { title: "Bitcoin Education", href: "/programs/bitcoin-education" },
-    { title: "Merchant Onboarding", href: "/programs/merchant-onboarding" },
+    { title: "Merchant Directory", href: "/merchants" },
     { title: "Boda-Boda Program", href: "/programs/boda-boda" },
     { title: "Waste Management", href: "/programs/waste-management" },
     { title: "Business Accelerator", href: "/programs/business-accelerator" },

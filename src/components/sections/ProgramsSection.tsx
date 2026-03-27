@@ -4,7 +4,7 @@ import { Container } from "@/components/layout/Container"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { programs } from "@/data/programs"
+import type { ProgramCard } from "@/types"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, GraduationCap, Bike, Recycle, TrendingUp, Smartphone } from "lucide-react"
@@ -15,6 +15,10 @@ const iconMap = {
   Recycle,
   TrendingUp,
   Smartphone,
+}
+
+interface ProgramsSectionProps {
+  programs: ProgramCard[]
 }
 
 function ProgressBar({ raised, goal }: { raised: number; goal: number }) {
@@ -44,7 +48,7 @@ function ProgressBar({ raised, goal }: { raised: number; goal: number }) {
   )
 }
 
-export function ProgramsSection() {
+export function ProgramsSection({ programs }: ProgramsSectionProps) {
   return (
     <section className="section-lg bg-gray-50">
       <Container>
@@ -117,7 +121,7 @@ export function ProgramsSection() {
                       size="lg"
                       className="w-full group-hover:bg-bitcoin group-hover:text-white group-hover:border-bitcoin transition-all"
                     >
-                      <Link href={`/programs#${program.slug}`}>
+                      <Link href={`/programs/${program.slug}`}>
                         Learn More
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Link>

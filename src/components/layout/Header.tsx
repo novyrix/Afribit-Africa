@@ -143,7 +143,10 @@ export function Header() {
 
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-background border-t shadow-2xl">
-        <nav className="grid grid-cols-5 gap-1 px-2 py-3">
+        <nav
+          className="grid gap-1 px-2 py-3"
+          style={{ gridTemplateColumns: `repeat(${mainNavigation.length}, minmax(0, 1fr))` }}
+        >
           {mainNavigation.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href)

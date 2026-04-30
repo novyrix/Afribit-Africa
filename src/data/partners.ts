@@ -46,4 +46,11 @@ export const partners: Partner[] = [
     logo: '/Partner logos/education.png',
     category: 'Education',
   },
+  {
+    name: 'Crack The Orange',
+    description: 'Supporting entrepreneurship and skills development in underserved communities.',
+    logo: '/Partner logos/_Crack-The-Orange-LOGO.png',
+    website: 'https://my.cracktheorange.com',
+    category: 'NGO',
+  },
 ];

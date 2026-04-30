@@ -235,6 +235,8 @@ model Merchant {
   acceptsBitcoin     Boolean  @default(true)
   paymentMethods     String?  @db.Text
   services           String?  @db.Text
+  btcpayStoreId      String?
+  btcpayUrl          String?  @db.Text
   primaryImage       String?
   videoUrl           String?
   youtubeId          String?
@@ -268,6 +270,8 @@ model Statistic {
   key       String   @unique // e.g., "total_transactions", "merchants_onboarded"
   value     String   // Flexible: can be number, JSON, etc.
   label     String   // Display label
+  suffix    String?  // e.g., "+"
+  prefix    String?  // e.g., "$"
   icon      String?  // Icon identifier
   order     Int      @default(0)
   updatedAt DateTime @updatedAt

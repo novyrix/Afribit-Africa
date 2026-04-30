@@ -5,25 +5,26 @@ import type { StatItem } from '@/types';
 
 const fallbackStatistics: StatItem[] = [
   {
-    label: 'Bitcoin Transactions',
-    value: 2000,
+    label: 'Bitcoin Transactions in Kibera',
+    value: 4000,
     icon: 'TrendingUp',
+    suffix: '+',
+  },
+  {
+    label: 'Youth & Women Trained',
+    value: 600,
+    icon: 'Users',
+    suffix: '+',
+  },
+  {
+    label: 'Boda-Boda Riders Licensed',
+    value: 40,
+    icon: 'Zap',
     suffix: '+',
   },
   {
     label: 'Merchants Onboarded',
     value: 200,
-    icon: 'Users',
-    suffix: '+',
-  },
-  {
-    label: 'Active Programs',
-    value: 5,
-    icon: 'Zap',
-  },
-  {
-    label: 'Community Members',
-    value: 1000,
     icon: 'Heart',
     suffix: '+',
   },
@@ -50,6 +51,8 @@ export async function listHomepageStatistics(): Promise<StatItem[]> {
       label: statistic.label,
       value: parseStatValue(statistic.value),
       icon: statistic.icon || undefined,
+      suffix: statistic.suffix || undefined,
+      prefix: statistic.prefix || undefined,
     }));
   } catch (error) {
     if (!loggedFallback) {

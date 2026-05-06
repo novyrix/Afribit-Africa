@@ -16,6 +16,17 @@ const donationSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.BTCPAY_API_KEY || !process.env.BTCPAY_STORE_ID || !process.env.BTCPAY_HOST) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Donation service unavailable',
+          message: 'Afribit donation checkout is temporarily unavailable. Please try again shortly.',
+        },
+        { status: 503 }
+      );
+    }
+
     // Parse and validate request body
     const body = await request.json();
     const validatedData = donationSchema.parse(body);
@@ -29,6 +40,8 @@ export async function POST(request: NextRequest) {
       message,
       isAnonymous,
     } = validatedData;
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin || 'https://afribit.africa';
 
     let programRecord = null;
 
@@ -50,6 +63,7 @@ export async function POST(request: NextRequest) {
     const invoiceData = await createInvoice({
       amount,
       currency,
+      redirectUrl: `${siteUrl}/donate/success`,
       metadata: {
         donorName: isAnonymous ? 'Anonymous' : donorName || 'Anonymous',
         donorEmail: donorEmail || '',

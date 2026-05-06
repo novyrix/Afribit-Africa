@@ -1,77 +1,74 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Loader2 } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import * as React from 'react'
+import { Slot } from '@radix-ui/react-slot'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 overflow-hidden [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-bitcoin focus-visible:ring-offset-2 active:scale-[0.98]",
+  [
+    'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold',
+    'transition-all duration-300 ease-out',
+    'disabled:pointer-events-none disabled:opacity-40',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bitcoin focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'overflow-hidden',
+  ].join(' '),
   {
     variants: {
       variant: {
-        default: "bg-bitcoin text-white hover:bg-bitcoin-dark hover:shadow-lg hover:scale-[1.02] shadow-md",
-        destructive:
-          "bg-destructive text-white hover:bg-destructive/90 shadow-md hover:shadow-lg",
-        outline:
-          "border-2 border-bitcoin text-bitcoin bg-transparent hover:bg-bitcoin hover:text-white shadow-sm hover:shadow-md",
-        secondary:
-          "bg-gray-100 text-gray-900 hover:bg-gray-200 shadow-sm hover:shadow-md dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
-        ghost:
-          "hover:bg-bitcoin/10 hover:text-bitcoin",
-        link: "text-bitcoin underline-offset-4 hover:underline hover:text-bitcoin-dark",
-        gradient: "bg-gradient-to-r from-bitcoin to-red text-white hover:shadow-xl hover:scale-[1.02] shadow-lg",
+        // Primary — bitcoin orange with gradient, glows on hover
+        default: [
+          'bg-gradient-to-b from-bitcoin via-bitcoin to-[#d97c0e] text-black',
+          'shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_-1px_0_rgba(0,0,0,0.2)_inset]',
+          'hover:shadow-[0_0_28px_6px_rgba(247,147,26,0.35),0_1px_0_rgba(255,255,255,0.25)_inset]',
+          'hover:brightness-110 active:brightness-95 active:scale-[0.98]',
+        ].join(' '),
+        // Outline — border reveals fill on hover
+        outline: [
+          'border border-white/15 bg-white/[0.03] text-foreground backdrop-blur-sm',
+          'hover:border-white/30 hover:bg-white/[0.08] hover:text-foreground',
+          'active:scale-[0.98]',
+        ].join(' '),
+        // Ghost
+        ghost: 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-white/5 active:bg-white/8',
+        // Secondary
+        secondary: 'bg-white/8 text-foreground hover:bg-white/12 active:scale-[0.98]',
+        // Destructive
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        // Link
+        link: 'text-bitcoin underline-offset-4 hover:underline p-0 h-auto',
       },
       size: {
-        default: "h-11 px-6 py-2.5 text-sm",
-        sm: "h-9 px-4 py-2 text-xs",
-        lg: "h-12 px-8 py-3 text-base",
-        xl: "h-14 px-10 py-4 text-lg",
-        icon: "size-10",
-        "icon-sm": "size-8",
-        "icon-lg": "size-12",
+        default: 'h-11 px-5 py-2.5',
+        sm: 'h-9 px-4 text-xs',
+        lg: 'h-12 px-7 text-base',
+        xl: 'h-14 px-8 text-base tracking-wide',
+        icon: 'size-10',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
   }
 )
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  loading = false,
-  children,
-  disabled,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-    loading?: boolean
-  }) {
-  const Comp = asChild ? Slot : "button"
-
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {!asChild && loading ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {children}
-        </>
-      ) : (
-        children
-      )}
-    </Comp>
-  )
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button'
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = 'Button'
 
 export { Button, buttonVariants }

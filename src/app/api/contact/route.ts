@@ -11,34 +11,7 @@ const contactSchema = z.object({
   phone: z.string().optional(),
   subject: z.string().min(3, 'Subject must be at least 3 characters').optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
-  hCaptchaToken: z.string().min(1, 'Please complete the captcha'),
 })
-
-// Verify hCaptcha token
-async function verifyHCaptcha(token: string): Promise<boolean> {
-  const secret = process.env.HCAPTCHA_SECRET
-  
-  if (!secret) {
-    console.error('HCAPTCHA_SECRET not configured')
-    return false
-  }
-
-  try {
-    const response = await fetch('https://hcaptcha.com/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `response=${token}&secret=${secret}`,
-    })
-
-    const data = await response.json()
-    return data.success === true
-  } catch (error) {
-    console.error('hCaptcha verification error:', error)
-    return false
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,16 +19,6 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     const validatedData = contactSchema.parse(body)
-
-    // Verify hCaptcha
-    const isHCaptchaValid = await verifyHCaptcha(validatedData.hCaptchaToken)
-    
-    if (!isHCaptchaValid) {
-      return NextResponse.json(
-        { success: false, error: 'Captcha verification failed' },
-        { status: 400 }
-      )
-    }
 
     // Save to database
     const submission = await prisma.contactSubmission.create({

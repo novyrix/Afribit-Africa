@@ -1,139 +1,136 @@
-import { Container } from "@/components/layout/Container"
-import { ContactForm } from "@/components/forms/ContactForm"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { StructuredData } from "@/components/StructuredData"
-import { getBreadcrumbSchema } from "@/lib/metadata"
-import { ScrollReveal } from "@/components/animations"
-import { Mail, MapPin, MessageSquare } from "lucide-react"
-import type { Metadata } from "next"
+﻿import type { Metadata } from 'next';
+import Link from 'next/link';
+import { generateMetadata } from '@/lib/metadata';
+import { Container } from '@/components/layout/container';
+import { CardSpotlight } from '@/components/ui/card-spotlight';
+import { Button } from '@/components/ui/button';
+import { ContactHero } from '@/components/contact/ContactHero';
+import ContactChannels from '@/components/contact/ContactChannels';
+import { ContactForm } from '@/components/contact/ContactForm';
+import { MessageSquare, Zap, Users, ArrowRight } from 'lucide-react';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://afribit.africa';
+// Generate SEO metadata for the contact page
+export const metadata: Metadata = generateMetadata({
+  title: 'Contact Us',
+  description: 'Get in touch with Afribit Africa. Reach out for inquiries, partnerships, media requests, or to learn more about our Bitcoin initiatives across Africa.',
+  path: '/contact',
+  keywords: ['contact Afribit', 'Bitcoin Africa contact', 'partnership inquiries', 'media contact', 'Africa Bitcoin support'],
+});
 
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description: "Get in touch with Afribit Africa. We're here to answer your questions about Bitcoin adoption in Africa, our programs, and how you can get involved.",
-  openGraph: {
-    title: "Contact Afribit Africa",
-    description: "Have questions about our Bitcoin programs? We'd love to hear from you.",
-    url: `${SITE_URL}/contact`,
+// FAQ data for contact page
+const CONTACT_FAQS = [
+  {
+    question: 'How quickly will I get a response?',
+    answer: "We aim to respond to all inquiries within 24 hours during business days. For urgent matters, please call our phone line.",
   },
-};
+  {
+    question: 'Do you have offices in other African countries?',
+    answer: "We currently operate primarily from Uganda with partners across East Africa. We're expanding to other regions - reach out to discuss potential partnerships.",
+  },
+  {
+    question: 'Can I visit your office in person?',
+    answer: 'Yes! We welcome visitors by appointment. Please contact us to schedule a visit to our Kampala office.',
+  },
+  {
+    question: 'Do you offer Bitcoin education or workshops?',
+    answer: 'Absolutely! We run regular Bitcoin education programs across Africa. Contact us to schedule a workshop for your community or organization.',
+  },
+];
 
 export default function ContactPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'Home', url: '/' },
-    { name: 'Contact', url: '/contact' },
-  ]);
-
   return (
-    <div className="min-h-screen section-hero">
-      <StructuredData data={breadcrumbSchema} />
-      <Container>
-        {/* Page Header */}
-        <ScrollReveal className="text-center space-y-4 mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions about our programs or want to get involved? We&apos;d love to hear from you.
-          </p>
-        </ScrollReveal>
+    <>
+      {/* Skip to content link for screen readers */}
+      <a 
+        href="#contact-form" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-bitcoin focus:text-white focus:rounded-lg"
+      >
+        Skip to contact form
+      </a>
+      
+      {/* Hero Section */}
+      <ContactHero />
 
-        <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
-          {/* Contact Information Cards */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-bitcoin/10 p-2 rounded-full">
-                    <Mail className="w-5 h-5 text-bitcoin" />
-                  </div>
-                  Email Us
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-muted-foreground leading-relaxed">
-                  Send us an email and we&apos;ll respond within 24 hours.
-                </p>
-                <a
-                  href="mailto:info@afribit.africa"
-                  className="text-bitcoin hover:text-bitcoin-dark font-semibold block transition-colors"
+      {/* Contact Channels Section */}
+      <ContactChannels />
+
+      {/* Contact Form Section */}
+      <section id="contact-form" className="section-lg">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                Send Us a Message
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Fill out the form below and we&apos;ll get back to you as soon as possible.
+              </p>
+            </div>
+            <ContactForm />
+          </div>
+        </Container>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="section">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Quick answers to common questions about contacting us.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {CONTACT_FAQS.map((faq, index) => (
+                <CardSpotlight
+                  key={index}
+                  radius={250}
+                  color="rgba(0,135,81,0.08)"
+                  className="p-6"
                 >
-                  info@afribit.africa
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex items-center justify-center size-10 rounded-lg bg-panafrican-green/10">
+                      <MessageSquare className="size-5 text-panafrican-green" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-bold text-foreground mb-2">
+                        {faq.question}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </CardSpotlight>
+              ))}
+            </div>
+
+            <div className="text-center mt-12 pt-8 border-t border-border-soft">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <Users className="size-5 text-bitcoin" aria-hidden="true" />
+                <span className="text-sm font-medium text-bitcoin">STILL HAVE QUESTIONS?</span>
+              </div>
+              <h3 className="font-display text-2xl font-bold text-foreground mb-4">
+                Need more specific help?
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Our team is ready to assist you with any questions about Bitcoin adoption,
+                partnership opportunities, or our programs across Africa.
+              </p>
+              <Button asChild size="lg">
+                <a href="mailto:support@afribit.africa">
+                  Email Our Support Team
+                  <Zap className="size-4 ml-2" aria-hidden="true" />
                 </a>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-bitcoin/10 p-2 rounded-full">
-                    <MapPin className="w-5 h-5 text-bitcoin" />
-                  </div>
-                  Location
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Kibera, Nairobi
-                  <br />
-                  Kenya
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 hover:border-bitcoin/20 hover:shadow-lg transition-all">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-bitcoin/10 p-2 rounded-full">
-                    <MessageSquare className="w-5 h-5 text-bitcoin" />
-                  </div>
-                  Social Media
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-muted-foreground leading-relaxed">
-                  Connect with us on social media for updates and news.
-                </p>
-                <div className="flex gap-4">
-                  <a
-                    href="https://twitter.com/afribitafrica"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-bitcoin hover:text-bitcoin-dark transition-colors font-medium"
-                  >
-                    Twitter
-                  </a>
-                  <span className="text-muted-foreground">•</span>
-                  <a
-                    href="https://facebook.com/afribitafrica"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-bitcoin hover:text-bitcoin-dark transition-colors font-medium"
-                  >
-                    Facebook
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
+              </Button>
+            </div>
           </div>
-
-          {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="border-2 hover:border-bitcoin/20 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">Send Us a Message</CardTitle>
-                <CardDescription className="text-base">
-                  Fill out the form below and we&apos;ll get back to you as soon as possible.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ContactForm />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </Container>
-    </div>
-  )
+        </Container>
+      </section>
+    </>
+  );
 }

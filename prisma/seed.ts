@@ -225,8 +225,8 @@ async function seedStatistics() {
     },
     {
       key: 'merchants_onboarded',
-      value: '200',
-      label: 'Merchants Onboarded',
+      value: '41',
+      label: 'Total merchants in the community',
       suffix: '+',
       icon: 'Heart',
       order: 3,

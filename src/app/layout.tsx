@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import 'leaflet/dist/leaflet.css';
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { Toaster } from "@/components/ui/sonner";
-import { StructuredData } from "@/components/StructuredData";
-import { getOrganizationSchema, getWebsiteSchema } from "@/lib/metadata";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://afribit.africa';
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -95,24 +93,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const organizationSchema = getOrganizationSchema();
-  const websiteSchema = getWebsiteSchema();
-
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <StructuredData data={[organizationSchema, websiteSchema]} />
-      </head>
+    <html lang="en" className={`${dmSans.variable} ${spaceGrotesk.variable} dark`} suppressHydrationWarning>
+      <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="bg-background font-sans text-foreground antialiased"
         suppressHydrationWarning
       >
         <Header />
-        <main className="min-h-screen">
+        <main>
           {children}
         </main>
         <Footer />
-        <Toaster />
       </body>
     </html>
   );

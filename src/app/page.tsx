@@ -1,71 +1,46 @@
-import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { StatisticsSection } from "@/components/sections/StatisticsSection";
-import { ProgramsSection } from "@/components/sections/ProgramsSection";
-import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import { NewsletterSection } from "@/components/sections/NewsletterSection";
-import { StructuredData } from "@/components/StructuredData";
-import { getBreadcrumbSchema } from "@/lib/metadata";
-import { listPrograms } from "@/lib/content/programs";
-import { listHomepageStatistics } from "@/lib/content/statistics";
-import { listTestimonials } from "@/lib/content/testimonials";
-import { ScrollReveal } from "@/components/animations";
-import Link from "next/link";
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
+import { HeroSection } from '@/components/sections/hero'
+import { BitcoinTicker } from '@/components/sections/bitcoin-ticker'
+import { CampaignProgress } from '@/components/sections/campaign-progress'
+import { ImpactStats } from '@/components/sections/impact-stats'
+import { RealPeople } from '@/components/sections/real-people'
+import { WhyKibera } from '@/components/sections/why-kibera'
+import { Programs } from '@/components/sections/programs'
+import { Testimonials } from '@/components/sections/testimonials'
+import { Partners } from '@/components/sections/partners'
+import { FediSection } from '@/components/sections/fedi-section'
+import { MediaCoverage } from '@/components/sections/media-coverage'
+import { FAQ } from '@/components/sections/faq'
+import { StrategicGoals } from '@/components/sections/strategic-goals'
 
 export const metadata: Metadata = {
-  title: "Afribit Africa",
-  description: "Empowering Africa through Bitcoin education, financial inclusion, and community development. Join us in bringing financial freedom to African communities with programs in education, waste management, and business acceleration.",
+  title: 'Afribit Africa — Empowering Communities Through Bitcoin',
+  description:
+    'Afribit is building a self-sustaining Bitcoin circular economy in Kibera, Nairobi — connecting 40+ merchants, 2000+ transactions, and 5 programs through the Lightning Network.',
   openGraph: {
-    title: "Afribit Africa - Empowering Communities Through Bitcoin",
-    description: "Join us in bringing Bitcoin financial freedom to African communities. Support education, merchant onboarding, and sustainable development initiatives.",
+    title: 'Afribit Africa — Bitcoin Circular Economy in Kibera',
+    description:
+      'Empowering African communities through Bitcoin education, financial inclusion, and on-the-ground programs in Kibera, Nairobi.',
   },
-};
+}
 
-export default async function Home() {
-  const [programs, statistics, testimonials] = await Promise.all([
-    listPrograms(),
-    listHomepageStatistics(),
-    listTestimonials(),
-  ]);
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'Home', url: '/' },
-  ]);
-
+export default function HomePage() {
   return (
     <>
-      <StructuredData data={breadcrumbSchema} />
-      
-      {/* Hero Section with Video Background */}
       <HeroSection />
-
-      {/* Statistics Section with Animated Counters */}
-      <StatisticsSection stats={statistics} />
-
-      {/* Programs Section */}
-      <ProgramsSection programs={programs} />
-
-      {/* Testimonials Section */}
-      <TestimonialsSection testimonials={testimonials} />
-
-      {/* Newsletter Section */}
-      <NewsletterSection />
-
-      {/* CTA Section */}
-      <section className="section-lg bg-gray-900 text-white">
-        <Container>
-          <ScrollReveal className="max-w-2xl mx-auto text-center space-y-6 md:space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold">Support Our Mission</h2>
-            <p className="text-xl opacity-90">
-              Your Bitcoin donation directly funds education, merchant onboarding, and community development in Kibera.
-            </p>
-            <Button asChild size="lg" variant="gradient">
-              <Link href="/donate">Donate with Bitcoin</Link>
-            </Button>
-          </ScrollReveal>
-        </Container>
-      </section>
+      <BitcoinTicker />
+      <CampaignProgress />
+      <ImpactStats />
+      <RealPeople />
+      <WhyKibera />
+      <Programs />
+      <Testimonials />
+      <Partners />
+      <FediSection />
+      <MediaCoverage />
+      <FAQ />
+      <StrategicGoals />
     </>
-  );
+  )
 }
+

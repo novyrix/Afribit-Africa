@@ -1,131 +1,187 @@
-import Link from "next/link"
-import { Container } from "./Container"
-import { NewsletterForm } from "@/components/forms/NewsletterForm"
-import { footerLinks, socialLinks } from "@/data/navigation"
-import { Facebook, Twitter, Linkedin, Youtube, Bitcoin, Heart } from "lucide-react"
+'use client'
 
-const socialIcons = {
-  facebook: Facebook,
-  twitter: Twitter,
-  linkedin: Linkedin,
-  youtube: Youtube,
-}
+import Link from 'next/link'
+import Image from 'next/image'
+import { Twitter, Instagram, Youtube, ExternalLink, Bitcoin } from 'lucide-react'
+import { Container } from './container'
+import { usePathname } from 'next/navigation'
+
+const QUICK_LINKS = [
+  { href: '/about', label: 'About Afribit' },
+  { href: '/programs/merchants', label: 'Merchant Program' },
+  { href: 'https://www.afribit.africa/maps', label: 'Merchant Map', external: true },
+  { href: '/donate', label: 'Donate' },
+  { href: '/contact', label: 'Contact' },
+]
+
+const COMMUNITY_LINKS = [
+  { href: 'https://www.afribit.africa/fedi', label: 'Join Community', external: true },
+  { href: 'https://btcmap.org/community/afribit-kibera', label: 'BTC Map', external: true },
+  { href: 'https://staging.geyser.fund/project/afribitkibera', label: 'Geyser Fund', external: true },
+]
+
+const RESOURCE_LINKS = [
+  { href: 'https://www.afribit.africa/legal/privacy', label: 'Privacy Policy', external: true },
+  { href: 'https://www.afribit.africa/legal/terms', label: 'Terms of Use', external: true },
+  { href: 'https://www.afribit.africa/legal/cookies', label: 'Cookie Policy', external: true },
+  { href: 'https://bitcoinconfederation.org/hub/afribit-kibera/', label: 'Bitcoin Confederation', external: true },
+]
+
+const SOCIALS = [
+  { href: 'https://x.com/afribitkibera', label: 'X (Twitter)', icon: Twitter },
+  { href: 'https://www.instagram.com/afribit_africa/', label: 'Instagram', icon: Instagram },
+  { href: 'https://youtube.com/@afribitafrica', label: 'YouTube', icon: Youtube },
+]
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+  const bgClass = isHome
+    ? 'bg-grid-lines glow-green bg-bg-surface/50 mt-0'
+    : 'border-t border-white/8 bg-bg-base mt-0'
 
   return (
-    <footer className="border-t bg-gray-900 text-gray-100">
+    <footer className={bgClass}>
       <Container>
-        <div className="py-16 md:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-            {/* Brand Column */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-2">
-                <Bitcoin className="h-8 w-8 text-bitcoin" />
-                <div className="font-bold text-2xl">
-                  <span className="text-bitcoin">Afribit</span>
-                  <span className="text-white"> Africa</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Empowering African communities through Bitcoin education, merchant onboarding, and sustainable development.
-              </p>
-              {/* Social Links */}
-              <div>
-                <h4 className="text-sm font-semibold mb-4 text-white">Follow Us</h4>
-                <div className="flex gap-3">
-                  {socialLinks.map((link) => {
-                    const Icon = socialIcons[link.icon as keyof typeof socialIcons]
-                    return (
-                      <Link
-                        key={link.name}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 text-gray-400 hover:bg-bitcoin hover:text-white transition-all hover:scale-110"
-                        aria-label={link.name}
-                      >
-                        {Icon && <Icon className="h-5 w-5" />}
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Company Links */}
-            <div>
-              <h3 className="font-semibold text-base mb-6 text-white">Company</h3>
-              <ul className="space-y-3">
-                {footerLinks.company.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-gray-400 hover:text-bitcoin transition-colors inline-flex items-center group"
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform">{link.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Programs Links */}
-            <div>
-              <h3 className="font-semibold text-base mb-6 text-white">Programs</h3>
-              <ul className="space-y-3">
-                {footerLinks.programs.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-gray-400 hover:text-bitcoin transition-colors inline-flex items-center group"
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform">{link.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Newsletter Column */}
-            <div>
-              <h3 className="font-semibold text-base mb-6 text-white">Stay Updated</h3>
-              <p className="text-sm text-gray-400 mb-4">
-                Get Bitcoin adoption news and program updates.
-              </p>
-              <NewsletterForm inline={false} showName={false} />
-              
-              {/* Resources Links */}
-              <div className="mt-8">
-                <h4 className="text-sm font-semibold mb-3 text-white">Resources</h4>
-                <ul className="space-y-2">
-                  {footerLinks.resources.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-xs text-gray-400 hover:text-bitcoin transition-colors"
-                      >
-                        {link.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        <div className="py-16 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Brand */}
+          <div className="lg:col-span-1">
+            <Link href="/" className="flex items-center gap-2.5 mb-4">
+              <Image
+                src="/Logo/Full logo png transparent.png"
+                alt="Afribit"
+                width={28}
+                height={28}
+                className="size-7 object-contain"
+              />
+              <span className="font-display text-base font-semibold text-foreground">Afribit</span>
+            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+              Building circular Bitcoin economies in Kibera, Nairobi — one transaction at a time.
+            </p>
+            <div className="flex items-center gap-3">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.href}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/8 transition-colors"
+                >
+                  <s.icon className="size-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="mt-16 pt-8 border-t border-gray-800">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-gray-400">
-                © {currentYear} Afribit Africa. All rights reserved.
-              </p>
-              <p className="text-sm text-gray-400 flex items-center gap-2">
-                Built with <Heart className="h-4 w-4 text-bitcoin inline" fill="currentColor" /> and <Bitcoin className="h-4 w-4 text-bitcoin inline" /> for African communities
-              </p>
-            </div>
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+              Quick Links
+            </h3>
+            <ul className="space-y-2.5">
+              {QUICK_LINKS.map((l) => (
+                <li key={l.href}>
+                  {l.external ? (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={l.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
+
+          {/* Community */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+              Community
+            </h3>
+            <ul className="space-y-2.5">
+              {COMMUNITY_LINKS.map((l) => (
+                <li key={l.href}>
+                  {l.external ? (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={l.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+              Resources
+            </h3>
+            <ul className="space-y-2.5">
+              {RESOURCE_LINKS.map((l) => (
+                <li key={l.href}>
+                  {l.external ? (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={l.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Afribit Africa. All rights reserved.
+          </p>
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
+            Built with <Bitcoin className="size-3 text-bitcoin" /> in Nairobi
+            <a
+              href="https://bitcoin.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-0.5 hover:text-bitcoin transition-colors"
+            >
+              <ExternalLink className="size-3" />
+            </a>
+          </p>
         </div>
       </Container>
     </footer>

@@ -68,26 +68,40 @@ export interface TestimonialCard {
 
 export interface MerchantProfile {
   id: string
-  testimonialId: string
   slug: string
   name: string
-  role: string
   category: string
   summary: string
-  story: string
-  location: string
-  neighborhood?: string
-  city: string
-  country: string
-  latitude?: number
-  longitude?: number
-  image: string
+  description?: string | null
+  locationLabel?: string | null
+  neighborhood?: string | null
+  city?: string | null
+  country?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  address?: string | null
+  phone?: string | null
+  email?: string | null
+  image?: string | null
   videoUrl?: string
   youtubeId?: string
-  programSlug?: string
+  acceptsBitcoin: boolean
   services: string[]
   paymentMethods: string[]
   featured?: boolean
+  programSlug?: string | null
+  btcpayUrl?: string | null
+  osmLink?: string | null
+  btcmapUrl?: string | null
+  openStatus?: string | null
+  bitcoinStatus?: string | null
+  paymentLightningEnabled?: boolean | null
+  paymentOnchainEnabled?: boolean | null
+  paymentLightningContactlessEnabled?: boolean | null
+  openingHours?: string | null
+  lastVerifiedAt?: Date | null
+  lastVerifiedByName?: string | null
+  verificationNotes?: string | null
 }
 
 export interface StatItem {

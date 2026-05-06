@@ -1,15 +1,14 @@
-// Container component for consistent page width and padding
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
-interface ContainerProps {
-  children: React.ReactNode
-  className?: string
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  as?: React.ElementType
 }
 
-export function Container({ children, className }: ContainerProps) {
+export function Container({ as: Comp = 'div', className, ...props }: ContainerProps) {
   return (
-    <div className={cn("container mx-auto px-4 sm:px-6 lg:px-8", className)}>
-      {children}
-    </div>
+    <Comp
+      className={cn('mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8', className)}
+      {...props}
+    />
   )
 }

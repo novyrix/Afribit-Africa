@@ -1,222 +1,287 @@
-import 'server-only';
+import 'server-only'
 
-import type { Merchant as PrismaMerchant, Program, Testimonial } from '@prisma/client';
-import type { MerchantProfile } from '@/types';
-import { prisma } from '@/lib/prisma';
-import { merchants as staticMerchants } from '@/data/merchants';
+import { Prisma, MerchantStatus } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
+import type { MerchantProfile } from '@/types'
 
-type MerchantRecord = PrismaMerchant & {
-  program: Program | null;
-  primaryTestimonial: Testimonial | null;
-};
-
-type MerchantRoute = {
-  slug: string;
-  updatedAt: Date;
-};
-
-const loggedFallbacks = {
-  merchants: false,
-  singleMerchant: new Set<string>(),
-  routes: false,
-};
-
-function logMerchantsFallback(message: string, error: unknown, slug?: string) {
-  if (slug) {
-    if (loggedFallbacks.singleMerchant.has(slug)) {
-      return;
-    }
-
-    loggedFallbacks.singleMerchant.add(slug);
-    console.error(`${message} ${slug}:`, error);
-    return;
-  }
-
-  if (message.includes('routes')) {
-    if (loggedFallbacks.routes) {
-      return;
-    }
-
-    loggedFallbacks.routes = true;
-    console.error(message, error);
-    return;
-  }
-
-  if (loggedFallbacks.merchants) {
-    return;
-  }
-
-  loggedFallbacks.merchants = true;
-  console.error(message, error);
+export interface MerchantFilters {
+  search?: string
+  category?: string
+  neighborhood?: string
+  paymentMethod?: string
+  featuredOnly?: boolean
 }
 
-function parseStringArray(value: string | null | undefined): string[] {
-  if (!value) {
-    return [];
+type MerchantRecord = Prisma.MerchantGetPayload<{
+  include: {
+    program: {
+      select: {
+        slug: true
+      }
+    }
   }
+}>
+
+type MerchantSupplementalRecord = {
+  slug: string
+  osmUrl: string | null
+  btcmapUrl: string | null
+  openStatus: string | null
+  bitcoinStatus: string | null
+  paymentLightningEnabled: boolean | null
+  paymentOnchainEnabled: boolean | null
+  paymentLightningContactlessEnabled: boolean | null
+  openingHours: string | null
+  lastVerifiedAt: Date | null
+  lastVerifiedByName: string | null
+  verificationNotes: string | null
+}
+
+function parseTextArray(value: string | null | undefined): string[] {
+  if (!value) return []
 
   try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+    const parsed = JSON.parse(value)
+    if (Array.isArray(parsed)) {
+      return parsed.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    }
   } catch {
-    return [];
+    // fall back to delimiter parsing below
   }
+
+  return value
+    .split(/,|\n|;/)
+    .map((item) => item.trim())
+    .filter(Boolean)
 }
 
-function fallbackMerchant(slug: string) {
-  return staticMerchants.find((merchant) => merchant.slug === slug);
+function fallbackMerchantImage(category: string) {
+  const normalized = category.toLowerCase()
+
+  if (normalized.includes('transport') || normalized.includes('boda')) {
+    return '/Images/Motorbike bitcoin onboarding.jpg'
+  }
+
+  if (normalized.includes('waste') || normalized.includes('clean')) {
+    return '/Images/Waste Collection.jpg'
+  }
+
+  if (normalized.includes('grocery') || normalized.includes('food') || normalized.includes('retail')) {
+    return '/Images/Mama mboga groceries accepting bitcoin.jpg'
+  }
+
+  return '/Images/Person scanning to pay in bitcoin2.jpg'
 }
 
-function toMerchantProfile(merchant: MerchantRecord): MerchantProfile {
-  const fallback = fallbackMerchant(merchant.slug);
+function deriveBtcmapUrl(osmUrl: string | null, btcmapUrl: string | null) {
+  if (btcmapUrl) {
+    return btcmapUrl
+  }
 
+  if (!osmUrl) {
+    return null
+  }
+
+  const match = osmUrl.match(/node\/(\d+)/)
+  return match ? `https://btcmap.org/merchant/node:${match[1]}` : null
+}
+
+async function getMerchantSupplementalMap(slugs: string[]) {
+  if (slugs.length === 0) {
+    return new Map<string, MerchantSupplementalRecord>()
+  }
+
+  const rows = await prisma.$queryRaw<MerchantSupplementalRecord[]>(Prisma.sql`
+    select
+      "slug",
+      "osmUrl",
+      "btcmapUrl",
+      "openStatus",
+      "bitcoinStatus",
+      "paymentLightningEnabled",
+      "paymentOnchainEnabled",
+      "paymentLightningContactlessEnabled",
+      "openingHours",
+      "lastVerifiedAt",
+      "lastVerifiedByName",
+      "verificationNotes"
+    from merchants
+    where "slug" in (${Prisma.join(slugs)})
+  `)
+
+  return new Map(rows.map((row) => [row.slug, row]))
+}
+
+function toMerchantProfile(
+  merchant: MerchantRecord,
+  supplemental?: MerchantSupplementalRecord
+): MerchantProfile {
   return {
     id: merchant.id,
-    testimonialId: fallback?.testimonialId || merchant.primaryTestimonial?.slug || merchant.id,
     slug: merchant.slug,
     name: merchant.name,
-    role: merchant.primaryTestimonial?.role || fallback?.role || merchant.category,
     category: merchant.category,
-    summary: merchant.summary || fallback?.summary || '',
-    story: merchant.description || fallback?.story || merchant.summary,
-    location: merchant.locationLabel || fallback?.location || 'Location pending',
-    neighborhood: merchant.neighborhood || fallback?.neighborhood,
-    city: merchant.city || fallback?.city || 'Nairobi',
-    country: merchant.country || fallback?.country || 'Kenya',
-    latitude: merchant.latitude ? Number(merchant.latitude) : fallback?.latitude,
-    longitude: merchant.longitude ? Number(merchant.longitude) : fallback?.longitude,
-    image:
-      merchant.primaryImage ||
-      fallback?.image ||
-      merchant.primaryTestimonial?.image ||
-      '/Images/Hero section video background fallback.png',
-    videoUrl: merchant.videoUrl || fallback?.videoUrl || merchant.primaryTestimonial?.videoUrl || undefined,
-    youtubeId: merchant.youtubeId || fallback?.youtubeId || merchant.primaryTestimonial?.youtubeId || undefined,
-    programSlug: merchant.program?.slug || fallback?.programSlug,
-    services: parseStringArray(merchant.services).length > 0 ? parseStringArray(merchant.services) : fallback?.services || [],
-    paymentMethods:
-      parseStringArray(merchant.paymentMethods).length > 0
-        ? parseStringArray(merchant.paymentMethods)
-        : fallback?.paymentMethods || ['Bitcoin'],
+    summary: merchant.summary,
+    description: merchant.description,
+    locationLabel: merchant.locationLabel,
+    neighborhood: merchant.neighborhood,
+    city: merchant.city,
+    country: merchant.country,
+    latitude: merchant.latitude ? Number(merchant.latitude) : null,
+    longitude: merchant.longitude ? Number(merchant.longitude) : null,
+    address: merchant.address,
+    phone: merchant.phone,
+    email: merchant.email,
+    image: merchant.primaryImage || fallbackMerchantImage(merchant.category),
+    videoUrl: merchant.videoUrl || undefined,
+    youtubeId: merchant.youtubeId || undefined,
+    acceptsBitcoin: merchant.acceptsBitcoin,
+    services: parseTextArray(merchant.services),
+    paymentMethods: parseTextArray(merchant.paymentMethods),
     featured: merchant.featured,
-  };
-}
-
-export async function listMerchants(): Promise<MerchantProfile[]> {
-  try {
-    const merchants = await prisma.merchant.findMany({
-      where: { status: 'ACTIVE' },
-      include: {
-        program: true,
-        primaryTestimonial: true,
-      },
-      orderBy: [{ featured: 'desc' }, { name: 'asc' }],
-    });
-
-    if (merchants.length === 0) {
-      return staticMerchants;
-    }
-
-    return merchants.map(toMerchantProfile);
-  } catch (error) {
-    logMerchantsFallback('Falling back to static merchants:', error);
-    return staticMerchants;
+    programSlug: merchant.program?.slug || null,
+    btcpayUrl: merchant.btcpayUrl,
+    osmLink: supplemental?.osmUrl || null,
+    btcmapUrl: deriveBtcmapUrl(supplemental?.osmUrl || null, supplemental?.btcmapUrl || null),
+    openStatus: supplemental?.openStatus || null,
+    bitcoinStatus: supplemental?.bitcoinStatus || null,
+    paymentLightningEnabled: supplemental?.paymentLightningEnabled ?? null,
+    paymentOnchainEnabled: supplemental?.paymentOnchainEnabled ?? null,
+    paymentLightningContactlessEnabled: supplemental?.paymentLightningContactlessEnabled ?? null,
+    openingHours: supplemental?.openingHours ?? null,
+    lastVerifiedAt: supplemental?.lastVerifiedAt ?? null,
+    lastVerifiedByName: supplemental?.lastVerifiedByName ?? null,
+    verificationNotes: supplemental?.verificationNotes ?? null,
   }
 }
 
-export async function findMerchantBySlug(slug: string): Promise<MerchantProfile | undefined> {
+export async function listMerchants(filters: MerchantFilters = {}): Promise<MerchantProfile[]> {
   try {
-    const merchant = await prisma.merchant.findUnique({
-      where: { slug },
-      include: {
-        program: true,
-        primaryTestimonial: true,
+    const merchants = await prisma.merchant.findMany({
+      where: {
+        status: MerchantStatus.ACTIVE,
+        featured: filters.featuredOnly || undefined,
+        category: filters.category || undefined,
+        neighborhood: filters.neighborhood || undefined,
+        OR: filters.search
+          ? [
+              { name: { contains: filters.search, mode: 'insensitive' } },
+              { summary: { contains: filters.search, mode: 'insensitive' } },
+              { category: { contains: filters.search, mode: 'insensitive' } },
+              { neighborhood: { contains: filters.search, mode: 'insensitive' } },
+              { city: { contains: filters.search, mode: 'insensitive' } },
+            ]
+          : undefined,
       },
-    });
+      include: {
+        program: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+      orderBy: [{ featured: 'desc' }, { name: 'asc' }],
+    })
 
-    if (!merchant) {
-      return fallbackMerchant(slug);
+    const supplementalMap = await getMerchantSupplementalMap(merchants.map((merchant) => merchant.slug))
+    const profiles = merchants.map((merchant) => toMerchantProfile(merchant, supplementalMap.get(merchant.slug)))
+
+    if (!filters.paymentMethod) {
+      return profiles
     }
 
-    return toMerchantProfile(merchant);
+    const needle = filters.paymentMethod.toLowerCase()
+    return profiles.filter((merchant) =>
+      merchant.paymentMethods.some((method) => method.toLowerCase().includes(needle))
+    )
   } catch (error) {
-    logMerchantsFallback('Falling back to static merchant for slug', error, slug);
-    return fallbackMerchant(slug);
+    console.error('Failed to load merchants:', error)
+    return []
   }
 }
 
 export async function listFeaturedMerchants(): Promise<MerchantProfile[]> {
-  const merchants = await listMerchants();
-  return merchants.filter((merchant) => merchant.featured);
+  return listMerchants({ featuredOnly: true })
 }
 
-export async function listMerchantsByProgram(programSlug: string): Promise<MerchantProfile[]> {
+export async function getMerchantBySlug(slug: string): Promise<MerchantProfile | undefined> {
   try {
-    const merchants = await prisma.merchant.findMany({
+    const merchant = await prisma.merchant.findFirst({
       where: {
-        status: 'ACTIVE',
-        program: { slug: programSlug },
+        slug,
+        status: MerchantStatus.ACTIVE,
       },
       include: {
-        program: true,
-        primaryTestimonial: true,
+        program: {
+          select: {
+            slug: true,
+          },
+        },
       },
-      orderBy: [{ featured: 'desc' }, { name: 'asc' }],
-    });
+    })
 
-    if (merchants.length === 0) {
-      return staticMerchants.filter((m) => m.programSlug === programSlug);
+    if (!merchant) {
+      return undefined
     }
 
-    return merchants.map(toMerchantProfile);
+    const supplementalMap = await getMerchantSupplementalMap([merchant.slug])
+    return toMerchantProfile(merchant, supplementalMap.get(merchant.slug))
   } catch (error) {
-    logMerchantsFallback('Falling back to static merchants by program:', error);
-    return staticMerchants.filter((m) => m.programSlug === programSlug);
+    console.error(`Failed to load merchant ${slug}:`, error)
+    return undefined
   }
 }
 
 export async function listRelatedMerchants(slug: string, limit = 3): Promise<MerchantProfile[]> {
-  const merchants = await listMerchants();
-  const currentMerchant = merchants.find((merchant) => merchant.slug === slug);
+  const [merchant, merchants] = await Promise.all([getMerchantBySlug(slug), listMerchants()])
 
-  if (!currentMerchant) {
-    return merchants.filter((merchant) => merchant.slug !== slug).slice(0, limit);
+  if (!merchant) {
+    return merchants.slice(0, limit)
   }
 
   return merchants
-    .filter((merchant) => merchant.slug !== slug)
+    .filter((candidate) => candidate.slug !== slug)
     .sort((left, right) => {
-      const leftScore = Number(left.category === currentMerchant.category) + Number(left.city === currentMerchant.city);
-      const rightScore = Number(right.category === currentMerchant.category) + Number(right.city === currentMerchant.city);
-      return rightScore - leftScore;
+      const leftScore =
+        Number(left.category === merchant.category) +
+        Number(left.neighborhood === merchant.neighborhood) +
+        Number(Boolean(left.btcmapUrl))
+      const rightScore =
+        Number(right.category === merchant.category) +
+        Number(right.neighborhood === merchant.neighborhood) +
+        Number(Boolean(right.btcmapUrl))
+
+      return rightScore - leftScore
     })
-    .slice(0, limit);
+    .slice(0, limit)
 }
 
-export async function listMerchantRoutes(): Promise<MerchantRoute[]> {
+export async function listMerchantSlugs(): Promise<string[]> {
+  const merchants = await listMerchants()
+  return merchants.map((merchant) => merchant.slug)
+}
+
+export async function getMerchantDirectoryStats() {
   try {
-    const merchants = await prisma.merchant.findMany({
-      where: { status: 'ACTIVE' },
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-      orderBy: [{ featured: 'desc' }, { name: 'asc' }],
-    });
+    const merchants = await listMerchants()
 
-    if (merchants.length === 0) {
-      return staticMerchants.map((merchant) => ({
-        slug: merchant.slug,
-        updatedAt: new Date(),
-      }));
+    const neighborhoods = new Set(merchants.map((merchant) => merchant.neighborhood).filter(Boolean))
+    const lightningEnabled = merchants.filter((merchant) =>
+      merchant.paymentMethods.some((method) => method.toLowerCase().includes('lightning'))
+    ).length
+
+    return {
+      totalMerchants: merchants.length,
+      featuredMerchants: merchants.filter((merchant) => merchant.featured).length,
+      neighborhoodsCovered: neighborhoods.size,
+      lightningEnabled,
     }
-
-    return merchants;
-  } catch (error) {
-    logMerchantsFallback('Falling back to static merchant routes:', error);
-    return staticMerchants.map((merchant) => ({
-      slug: merchant.slug,
-      updatedAt: new Date(),
-    }));
+  } catch {
+    return {
+      totalMerchants: 0,
+      featuredMerchants: 0,
+      neighborhoodsCovered: 0,
+      lightningEnabled: 0,
+    }
   }
 }

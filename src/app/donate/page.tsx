@@ -1,360 +1,277 @@
-'use client';
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import { ArrowRight, BadgeCheck, Bitcoin, HandCoins, ShieldCheck } from 'lucide-react'
+import { Container } from '@/components/layout/container'
+import { DonateExperience } from '@/components/donations/donate-experience'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { CardSpotlight } from '@/components/ui/card-spotlight'
+import { generateMetadata } from '@/lib/metadata'
+import { donationFaqs, donationTiers } from '@/lib/donation-tiers'
+import { getStoreStats } from '@/lib/btcpay'
 
-import { useState } from 'react';
-import { Container } from '@/components/layout/Container';
-import { DonationModal } from '@/components/donations/DonationModal';
-import { ImpactCalculator } from '@/components/donations/ImpactCalculator';
-import { ScrollReveal } from '@/components/animations';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Bitcoin, Heart, Users, TrendingUp, CheckCircle, Shield, Globe } from 'lucide-react';
+export const metadata: Metadata = generateMetadata({
+  title: 'Donate',
+  description:
+    'Fuel the Bitcoin revolution in Kibera. Support merchant growth, education, cleanups, upcycling, and community resilience through Afribit’s Bitcoin-native donation flow.',
+  path: '/donate',
+  keywords: [
+    'donate Afribit',
+    'Bitcoin donation Kibera',
+    'support Bitcoin circular economy',
+    'Afribit fundraiser',
+    'donate to Kibera programs',
+  ],
+})
 
-const DONATION_TIERS = [
-  {
-    amount: 25,
-    title: 'Supporter',
-    description: 'Help us reach 5 people with Bitcoin education',
-    icon: <Heart className="h-6 w-6" />,
-  },
-  {
-    amount: 50,
-    title: 'Advocate',
-    description: 'Support 2 training sessions for local merchants',
-    icon: <Users className="h-6 w-6" />,
-  },
-  {
-    amount: 100,
-    title: 'Champion',
-    description: 'Enable 10 Bitcoin wallet setups',
-    icon: <Bitcoin className="h-6 w-6" />,
-  },
-  {
-    amount: 250,
-    title: 'Pioneer',
-    description: 'Onboard 5 merchants to accept Bitcoin',
-    icon: <TrendingUp className="h-6 w-6" />,
-  },
-  {
-    amount: 500,
-    title: 'Visionary',
-    description: 'Fully fund a community education program',
-    icon: <Globe className="h-6 w-6" />,
-  },
-];
+const GOAL = 100_000
 
-const IMPACT_STORIES = [
+const whyDonate = [
   {
-    name: 'Fridah',
-    role: 'Market Vendor',
-    story: 'Thanks to donations, I learned to accept Bitcoin payments. My business has grown 30% and I can now save money without worrying about inflation.',
-    image: '/Images/fridah.jpg',
+    title: 'Keep value circulating locally',
+    description:
+      'Your gift helps sats move through real livelihoods in Kibera, from neighborhood trade and rider incomes to cleanup crews and women-led production.',
+    icon: Bitcoin,
   },
   {
-    name: 'Brian',
-    role: 'Boda-Boda Driver',
-    story: 'The Bitcoin training program changed my life. I now accept digital payments and have access to financial services for the first time.',
-    image: '/Images/brian.jpg',
+    title: 'Fund practical adoption',
+    description:
+      'You are funding the tools, training, equipment, and hands-on support that turn first-time users into repeat participants in a working circular economy.',
+    icon: HandCoins,
   },
   {
-    name: 'Grace',
-    role: 'Small Business Owner',
-    story: 'With the equipment funded by donors, I started accepting Bitcoin payments. My customers love it, and I\'ve opened doors to global commerce.',
-    image: '/Images/grace.jpg',
+    title: 'Support verifiable infrastructure',
+    description:
+      'Your contribution moves through a Bitcoin-native payment flow and supports work that can be followed through public ecosystem references and visible community outcomes.',
+    icon: ShieldCheck,
   },
-];
+]
 
-const FAQ_ITEMS = [
-  {
-    question: 'How do I donate with Bitcoin?',
-    answer: 'Click any donation button above, and you\'ll be redirected to our secure BTCPay Server checkout. You can pay with Bitcoin on-chain or via Lightning Network. QR codes are provided for easy wallet scanning.',
-  },
-  {
-    question: 'Can I donate with traditional currency?',
-    answer: 'Currently, we accept Bitcoin donations through BTCPay Server. The amounts displayed in USD are converted to Bitcoin at the current exchange rate when you create your donation invoice.',
-  },
-  {
-    question: 'Is my donation tax-deductible?',
-    answer: 'Afribit Africa is a registered non-profit organization. Donations may be tax-deductible depending on your country\'s regulations. We provide receipts for all donations. Please consult with a tax professional in your jurisdiction.',
-  },
-  {
-    question: 'How is my donation used?',
-    answer: 'Your donation directly supports Bitcoin education programs, merchant onboarding, equipment purchases, and community development initiatives across Africa. We maintain full transparency with regular impact reports.',
-  },
-  {
-    question: 'Can I make a recurring donation?',
-    answer: 'Recurring donations are not currently available through our BTCPay Server integration, but we\'re working on this feature. For now, you can manually create donations at your preferred frequency.',
-  },
-  {
-    question: 'Is my payment secure?',
-    answer: 'Yes! All payments are processed through BTCPay Server, a self-hosted, open-source Bitcoin payment processor. Your transaction is secured by the Bitcoin network, and we never have access to your private keys.',
-  },
-  {
-    question: 'Can I donate anonymously?',
-    answer: 'Absolutely! When creating your donation, simply check the "Make this donation anonymous" option. Your name and email will not be recorded or displayed publicly.',
-  },
-  {
-    question: 'How long does it take for my donation to be confirmed?',
-    answer: 'Bitcoin on-chain transactions typically confirm within 10-60 minutes depending on network congestion. Lightning Network payments are instant. You\'ll receive confirmation once the transaction is settled.',
-  },
-];
+async function getDonationStats() {
+  const stats = await getStoreStats()
 
-export default function DonatePage() {
-  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState<number | undefined>();
-  const [selectedProgram, setSelectedProgram] = useState<string | undefined>();
+  if (!stats) {
+    return {
+      totalRaised: 2820.2,
+      totalDonations: 77,
+      currency: 'USD',
+    }
+  }
 
-  const handleDonate = (amount?: number, program?: string) => {
-    setSelectedAmount(amount);
-    setSelectedProgram(program);
-    setIsDonationModalOpen(true);
-  };
+  return stats
+}
+
+export default async function DonatePage() {
+  const stats = await getDonationStats()
+  const percent = Math.min((stats.totalRaised / GOAL) * 100, 100)
 
   return (
     <>
-      <div className="min-h-screen">
-        {/* Hero Section */}
-        <section className="section-hero bg-linear-to-b from-primary/10 to-background">
-          <Container>
-            <ScrollReveal className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
-              <h1 className="text-4xl md:text-5xl font-bold">
-                Support Bitcoin Adoption in Africa
+      <section className="section-hero relative overflow-hidden bg-bg-base">
+        <div className="absolute inset-0 bg-grid-lines opacity-40" aria-hidden />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(247,147,26,0.18),transparent_28rem),radial-gradient(circle_at_right_center,rgba(0,107,66,0.16),transparent_26rem)]" aria-hidden />
+        <Container className="relative z-10">
+          <div className="grid gap-10 pb-10 pt-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="max-w-3xl">
+              <Badge variant="secondary" className="mb-5">
+                Donate
+              </Badge>
+              <h1 className="font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl md:text-6xl">
+                Fuel the <span className="text-bitcoin">Bitcoin Revolution</span>
               </h1>
-              <p className="text-xl text-muted-foreground">
-                Your donation empowers communities, educates merchants, and builds a Bitcoin-powered
-                future for Africa.
+              <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+                Your contribution powers financial freedom, environmental stewardship, and community resilience in Kibera.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button onClick={() => handleDonate()} size="lg" variant="gradient" className="text-lg">
-                  <Bitcoin className="mr-2 h-5 w-5" />
-                  Donate Now
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <a href="#impact">See Your Impact</a>
-                </Button>
-              </div>
-            </ScrollReveal>
-          </Container>
-        </section>
 
-        {/* Stats Section */}
-        <section className="section-md bg-secondary/30">
-          <Container>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-              {[
-                { label: 'Total Raised', value: '$2,149', icon: <TrendingUp /> },
-                { label: 'Donors', value: '127', icon: <Users /> },
-                { label: 'Merchants Helped', value: '200+', icon: <Users /> },
-                { label: 'Active Programs', value: '5', icon: <CheckCircle /> },
-              ].map((stat, index) => (
-                <Card key={index} className="p-6 text-center space-y-3">
-                  <div className="flex justify-center text-primary">{stat.icon}</div>
-                  <p className="text-3xl font-bold">{stat.value}</p>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                </Card>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* Donation Tiers */}
-        <section className="section-lg">
-          <Container>
-            <div className="text-center space-y-4 mb-12 md:mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold">Choose Your Impact Level</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Every contribution makes a difference. Select a tier or choose a custom amount.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
-              {DONATION_TIERS.map((tier, index) => (
-                <Card
-                  key={index}
-                  className="p-6 md:p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group border-2 hover:border-bitcoin/20"
-                  onClick={() => handleDonate(tier.amount)}
-                >
-                  <div className="bg-bitcoin/10 text-bitcoin p-4 rounded-full w-fit mb-6 group-hover:scale-110 group-hover:bg-bitcoin group-hover:text-white transition-all duration-300">
-                    {tier.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-bitcoin transition-colors">{tier.title}</h3>
-                  <p className="text-4xl font-bold text-bitcoin mb-6">${tier.amount}</p>
-                  <p className="text-muted-foreground mb-8 leading-relaxed">{tier.description}</p>
-                  <Button className="w-full group-hover:bg-bitcoin group-hover:text-white transition-all" variant="outline" size="lg">
-                    Select
-                  </Button>
-                </Card>
-              ))}
-
-              {/* Custom Amount Card */}
-              <Card
-                className="p-6 md:p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 border-dashed border-bitcoin/30 hover:border-bitcoin group"
-                onClick={() => handleDonate()}
-              >
-                <div className="bg-linear-to-br from-bitcoin to-red-600 text-white p-4 rounded-full w-fit mb-6 group-hover:scale-110 transition-transform">
-                  <Heart className="h-6 w-6" />
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                  <p className="text-2xl font-display font-bold text-foreground">
+                    ${stats.totalRaised.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="mt-2 text-sm text-muted-foreground">Raised so far</p>
                 </div>
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-bitcoin transition-colors">Custom Amount</h3>
-                <p className="text-4xl font-bold text-bitcoin mb-6">$___</p>
-                <p className="text-muted-foreground mb-8 leading-relaxed">
-                  Choose any amount that works for you
-                </p>
-                <Button className="w-full" variant="outline" size="lg">
-                  Choose Amount
-                </Button>
-              </Card>
-            </div>
-          </Container>
-        </section>
-
-        {/* Impact Calculator */}
-        <section id="impact" className="section-lg bg-secondary/30">
-          <Container>
-            <div className="max-w-2xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Calculate Your Impact</h2>
-                <p className="text-lg text-muted-foreground">
-                  See how your donation transforms lives across Africa
-                </p>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                  <p className="text-2xl font-display font-bold text-foreground">{stats.totalDonations}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Contributors</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                  <p className="text-2xl font-display font-bold text-foreground">{percent.toFixed(1)}%</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Of $100,000 goal</p>
+                </div>
               </div>
-              <ImpactCalculator defaultAmount={50} />
-            </div>
-          </Container>
-        </section>
 
-        {/* Impact Stories */}
-        <section className="section-lg">
-          <Container>
-            <div className="text-center space-y-4 mb-12 md:mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold">Your Donations at Work</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Real stories from people whose lives have been transformed by Bitcoin education
-              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button asChild size="xl">
+                  <a href="#choose-impact">
+                    Choose your impact
+                    <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </Button>
+                <Button asChild variant="outline" size="xl">
+                  <a href="https://pay.afribit.africa/" target="_blank" rel="noreferrer">
+                    Visit BTCPay Server
+                  </a>
+                </Button>
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-              {IMPACT_STORIES.map((story, index) => (
-                <Card 
-                  key={index} 
-                  className="p-6 space-y-4 border-2 hover:border-bitcoin/20 hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden"
-                >
-                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-200">
-                    <img
-                      src={story.image}
-                      alt={story.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        e.currentTarget.src = '/Images/placeholder.jpg';
-                      }}
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[#141615] p-3 shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
+              <div className="relative aspect-[4/4.6] overflow-hidden rounded-[1.45rem]">
+                <Image
+                  src="/Images/Person scanning to pay in bitcoin2.jpg"
+                  alt="Afribit supporter making a Bitcoin payment"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+                <div className="absolute inset-x-5 bottom-5 rounded-[1.5rem] border border-white/12 bg-black/35 p-5 backdrop-blur-md">
+                  <div className="mb-4 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-bitcoin to-[#ffb05f]"
+                      style={{ width: `${Math.max(percent, 1)}%` }}
                     />
                   </div>
-                  <h3 className="text-xl font-bold group-hover:text-bitcoin transition-colors">{story.name}</h3>
-                  <p className="text-sm text-bitcoin font-semibold">{story.role}</p>
-                  <p className="text-muted-foreground italic leading-relaxed">&ldquo;{story.story}&rdquo;</p>
-                </Card>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* Why Donate Section */}
-        <section className="section-lg bg-secondary/30">
-          <Container>
-            <div className="text-center space-y-4 mb-12 md:mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold">Why Your Donation Matters</h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
-              {[
-                {
-                  icon: <Shield className="h-12 w-12" />,
-                  title: 'Financial Inclusion',
-                  description:
-                    'Bitcoin provides banking services to millions of unbanked Africans, offering an alternative to unstable local currencies.',
-                },
-                {
-                  icon: <Users className="h-12 w-12" />,
-                  title: 'Community Empowerment',
-                  description:
-                    'Education programs create jobs, train merchants, and build sustainable Bitcoin economies in local communities.',
-                },
-                {
-                  icon: <Globe className="h-12 w-12" />,
-                  title: 'Global Impact',
-                  description:
-                    'Your donation connects African businesses to the global economy, opening new markets and opportunities.',
-                },
-              ].map((item, index) => (
-                <div key={index} className="text-center space-y-4">
-                  <div className="flex justify-center text-primary">{item.icon}</div>
-                  <h3 className="text-xl font-bold">{item.title}</h3>
-                  <p className="text-muted-foreground">{item.description}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-bitcoin/95">
+                    Live campaign momentum
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-white/82">
+                    Every contribution strengthens merchant growth, training, waste incentives, and community resilience already taking root across Kibera.
+                  </p>
                 </div>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="section-lg">
-          <Container>
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center space-y-4 mb-12 md:mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold">
-                  Frequently Asked Questions
-                </h2>
-                <p className="text-lg text-muted-foreground">
-                  Everything you need to know about donating
-                </p>
               </div>
+            </div>
+          </div>
+        </Container>
+      </section>
 
-              <Accordion type="single" collapsible className="w-full">
-                {FAQ_ITEMS.map((item, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left">
-                      {item.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      {item.answer}
-                    </AccordionContent>
+      <section className="section bg-bg-surface/50 bg-grid-lines">
+        <Container>
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bitcoin">
+              Why donate
+            </p>
+            <h2 className="font-display text-3xl font-bold text-foreground sm:text-4xl">
+              Give to a working circular economy, not a detached campaign promise.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-8">
+              Afribit’s donation flow is tied to concrete work already happening in Kibera: onboarding merchants, equipping women-led enterprise, rewarding cleanup crews, and opening new financial paths for riders and families.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {whyDonate.map((item) => (
+              <CardSpotlight key={item.title} className="h-full p-6">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-bitcoin/10">
+                  <item.icon className="size-5 text-bitcoin" />
+                </div>
+                <h3 className="mt-5 font-display text-xl font-bold text-foreground">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.description}</p>
+              </CardSpotlight>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="choose-impact" className="section bg-bg-base">
+        <Container>
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bitcoin">
+              Choose your impact
+            </p>
+            <h2 className="font-display text-3xl font-bold text-foreground sm:text-4xl">
+              Select a tier that resonates with you or contribute a custom amount.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-8">
+              The live site frames this as a donor card grid, not a pricing table. Each option reflects a different way to strengthen Afribit’s Bitcoin-native work on the ground.
+            </p>
+          </div>
+
+          <DonateExperience tiers={donationTiers} />
+        </Container>
+      </section>
+
+      <section className="section bg-bg-surface/50 bg-grid-lines">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bitcoin">
+                Trust and transparency
+              </p>
+              <h2 className="font-display text-3xl font-bold text-foreground sm:text-4xl">
+                Give with confidence and follow the work beyond the checkout screen.
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-8">
+                Afribit uses a Bitcoin-native checkout flow so more of your support goes directly toward the work. Around that payment flow, you can follow community proof, partner references, and the public ecosystem that surrounds this mission in Kibera.
+              </p>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-3 text-bitcoin">
+                    <BadgeCheck className="size-5" />
+                    <span className="text-sm font-semibold uppercase tracking-[0.18em]">Bitcoin-native payment</span>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                    Your donation goes through BTCPay Server, giving you a direct Bitcoin payment path without relying on a conventional payment processor.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-3 text-panafrican-green">
+                    <ShieldCheck className="size-5" />
+                    <span className="text-sm font-semibold uppercase tracking-[0.18em]">Community accountability</span>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                    BTC Map, Geyser, Bitcoin Confederation, and visible local program work offer real-world context for the ecosystem your contribution is helping to strengthen.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/8 bg-[#121513] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.2)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-bitcoin/90">
+                Quick references
+              </p>
+              <div className="mt-5 grid gap-3 text-sm text-muted-foreground">
+                <a className="rounded-xl border border-white/8 px-4 py-3 hover:border-bitcoin/40 hover:text-foreground transition-colors" href="https://pay.afribit.africa/" target="_blank" rel="noreferrer">BTCPay Server</a>
+                <a className="rounded-xl border border-white/8 px-4 py-3 hover:border-bitcoin/40 hover:text-foreground transition-colors" href="https://btcmap.org/community/afribit-kibera" target="_blank" rel="noreferrer">BTC Map Community</a>
+                <a className="rounded-xl border border-white/8 px-4 py-3 hover:border-bitcoin/40 hover:text-foreground transition-colors" href="https://staging.geyser.fund/project/afribitkibera" target="_blank" rel="noreferrer">Geyser Fund</a>
+                <a className="rounded-xl border border-white/8 px-4 py-3 hover:border-bitcoin/40 hover:text-foreground transition-colors" href="https://bitcoinconfederation.org/hub/afribit-kibera/" target="_blank" rel="noreferrer">Bitcoin Confederation</a>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="section bg-bg-base">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-bitcoin">
+                Support and answers
+              </p>
+              <h2 className="font-display text-3xl font-bold text-foreground sm:text-4xl">
+                Common donor questions, answered clearly.
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-8">
+                These answers are here to help you choose how to give, understand what your support can power, and know what to expect before you head to checkout.
+              </p>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/8 bg-bg-surface/70 px-6 py-3">
+              <Accordion type="single" collapsible>
+                {donationFaqs.map((faq) => (
+                  <AccordionItem key={faq.question} value={faq.question}>
+                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                    <AccordionContent>{faq.answer}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
             </div>
-          </Container>
-        </section>
-
-        {/* CTA Section */}
-        <section className="section-lg bg-linear-to-r from-primary to-orange-500 text-white">
-          <Container>
-            <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
-              <h2 className="text-3xl md:text-4xl font-bold">
-                Ready to Make a Difference?
-              </h2>
-              <p className="text-xl text-white/90">
-                Join hundreds of donors supporting Bitcoin adoption across Africa. Every satoshi
-                counts.
-              </p>
-              <Button
-                onClick={() => handleDonate()}
-                size="lg"
-                variant="secondary"
-                className="text-lg"
-              >
-                <Bitcoin className="mr-2 h-5 w-5" />
-                Donate with Bitcoin
-              </Button>
-            </div>
-          </Container>
-        </section>
-      </div>
-
-      <DonationModal
-        isOpen={isDonationModalOpen}
-        onClose={() => setIsDonationModalOpen(false)}
-        defaultAmount={selectedAmount}
-        defaultProgram={selectedProgram}
-      />
+          </div>
+        </Container>
+      </section>
     </>
-  );
+  )
 }
